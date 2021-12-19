@@ -7,21 +7,31 @@
   "author": "Symbux Dev <hello@symbux.dev> (https://symbux.dev)",
   "license": "Apache-2.0",
   "private": false,
+  "scripts": {
+    "start": "ENV=development node -r ts-node/register demo/index.ts",
+    "build": "rm -rf lib && tsc",
+    "lint": "eslint . --ext .ts",
+    "prepublishOnly": "yarn lint && yarn build",
+    "changelog": "auto-changelog --template keepachangelog --commit-limit false --hide-credit"
+  },
   "peerDependencies": {
-    "@symbux/injector": "^1.1.1",
+    "@symbux/injector": "^1.2.0",
     "@symbux/turbo": "^0.2.10"
   },
   "devDependencies": {
-    "@types/node": "^16.11.12",
+    "@types/node": "^16.11.13",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
+    "dotenv": "^10.0.0",
     "eslint": "^8.4.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   },
   "dependencies": {
+    "@discordjs/builders": "^0.9.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "discord-api-types": "^0.25.2",
-    "discord.js": "^13.3.1"
+    "discord.js": "^13.3.1",
+    "fetch": "^1.1.0"
   }
 }
