@@ -44,10 +44,10 @@ export class DiscordService extends AbstractService implements IService {
 	public async initialise(): Promise<void> {
 
 		// Create the discord bot client.
-		this.logger.verbose('DISCORD', 'Initialising the Discord service.');
+		this.logger.verbose('PLUGIN:DISCORD', 'Initialising the Discord service.');
 		this.client = new Client({ intents: [ Intents.FLAGS.GUILDS ]});
 		this.client.on('ready', () => {
-			this.logger.info('DISCORD', 'The discord bot is now connected.');
+			this.logger.info('PLUGIN:DISCORD', 'The discord bot is now connected.');
 			this.client.user?.setActivity(this.options.startActivity);
 
 			// Register the commands, once connected.
@@ -67,22 +67,22 @@ export class DiscordService extends AbstractService implements IService {
 	}
 
 	public async start(): Promise<void> {
-		this.logger.info('DISCORD', 'Starting the Discord service.');
+		this.logger.info('PLUGIN:DISCORD', 'Starting the Discord service.');
 		this.client.login(this.options.botToken).catch(err => {
 			const loginError = err as Error;
-			this.logger.error('DISCORD', `Failed to connect to discord, error: ${loginError.message}`, loginError);
+			this.logger.error('PLUGIN:DISCORD', `Failed to connect to discord, error: ${loginError.message}`, loginError);
 		});
 	}
 
 	public async stop(): Promise<void> {
-		this.logger.info('DISCORD', 'Stopping the Discord service.');
+		this.logger.info('PLUGIN:DISCORD', 'Stopping the Discord service.');
 		this.client.destroy();
 	}
 
 	private async registerCommands(): Promise<void> {
 
 		// Define the slash commands array.
-		this.logger.verbose('DISCORD', 'Retrieving the commands.');
+		this.logger.verbose('PLUGIN:DISCORD', 'Retrieving the commands.');
 		const slashCommands: Array<any> = [];
 
 		// Loop the controllers and get the commands.
@@ -111,7 +111,7 @@ export class DiscordService extends AbstractService implements IService {
 			}
 
 			// Note found command.
-			this.logger.verbose('DISCORD', `Found command: ${slashCommand.name}.`);
+			this.logger.verbose('PLUGIN:DISCORD', `Found command: ${slashCommand.name}.`);
 		});
 
 		// Register the commands with all connected guilds.
@@ -121,7 +121,7 @@ export class DiscordService extends AbstractService implements IService {
 		});
 
 		// Note success.
-		this.logger.verbose('DISCORD', `Registered ${slashCommands.length} commands.`);
+		this.logger.verbose('PLUGIN:DISCORD', `Registered ${slashCommands.length} commands.`);
 	}
 
 	private setupEvents(): void {
@@ -151,7 +151,7 @@ export class DiscordService extends AbstractService implements IService {
 		} catch(err) {
 
 			// Log any error.
-			this.logger.error('DISCORD', `Failed to handle interaction, error: ${(err as Error).message}`, (err as Error));
+			this.logger.error('PLUGIN:DISCORD', `Failed to handle interaction, error: ${(err as Error).message}`, (err as Error));
 
 			// Wait 250 ms.
 			await Wait(100);

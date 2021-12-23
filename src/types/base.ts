@@ -8,11 +8,13 @@ export interface IMiddleware extends IGenericMiddleware {
 export interface IOptions {
 	botToken: string;
 	clientId: string;
-	clientSecret?: string;
-	enableOauth?: boolean;
-	baseAuthPath?: string;
 	activityInterval?: number;
 	activities?: IActivityItem | IActivityItem[];
+	oauth?: {
+		secret: string;
+		scopes: string[];
+		baseUrl: string;
+	}
 }
 
 export interface IActivityItem {

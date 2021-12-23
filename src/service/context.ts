@@ -2,6 +2,7 @@ import {
 	Client, CommandInteraction, Guild, GuildMember,
 	Interaction, MessageActionRow, MessageButton, MessageEmbed,
 	PermissionResolvable, TextBasedChannels, User, Message,
+	MessageButtonStyleResolvable, MessageActionRowComponentResolvable,
 } from 'discord.js';
 import { Translator } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
@@ -236,17 +237,10 @@ export class Context {
 			.setColor('#37ff00');
 
 		// Create the buttons.
-		const actionRow = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('internal:confirm')
-					.setLabel(options?.labels?.accept || 'Yes')
-					.setStyle('SUCCESS'),
-				new MessageButton()
-					.setCustomId('internal:reject')
-					.setLabel(options?.labels?.reject || 'No')
-					.setStyle('DANGER'),
-			);
+		const actionRow = this.createActionRow(
+			this.createButton(options?.labels?.accept || 'Yes', 'SUCCESS', 'internal:confirm'),
+			this.createButton(options?.labels?.reject || 'No', 'DANGER', 'internal:reject'),
+		);
 
 		// Verify the reply has been deferred.
 		const interaction = this.getInteraction<CommandInteraction>();
@@ -295,5 +289,45 @@ export class Context {
 
 		// Check and return result.
 		return collectedInteraction.customId === 'internal:confirm';
+	}
+
+	/**
+	 * Will present the user with a dropdown of choices from here, they can
+	 * choose the option that suits them and this will be returned. If the user
+	 * fails to reply within the default timeout of 5 minutes, null will be
+	 * returned.
+	 *
+	 * @param question The question to ask the user.
+	 * @param options The available options as strings.
+	 * @returns The selected option.
+	 */
+	public async select(question: string, options: string[]): Promise<string | null> {
+		console.log(question, options);
+		return null;
+	}
+
+	/**
+	 * Will create an empty action row.
+	 *
+	 * @returns MessageActionRow
+	 */
+	public createActionRow(...components: MessageActionRowComponentResolvable[] | MessageActionRowComponentResolvable[][]): MessageActionRow {
+		return new MessageActionRow()
+			.addComponents(...components);
+	}
+
+	/**
+	 * Creates a new button for the action row.
+	 *
+	 * @param label The button label.
+	 * @param style The button style.
+	 * @param customId A unique ID.
+	 * @returns MessageButton
+	 */
+	public createButton(label: string, style: MessageButtonStyleResolvable, customId: string): MessageButton {
+		return new MessageButton()
+			.setCustomId(customId)
+			.setLabel(label)
+			.setStyle(style);
 	}
 }

@@ -1,0 +1,128 @@
+import { Http, ILogger } from '@symbux/turbo';
+import { Inject } from '@symbux/injector';
+import { IOptions } from '../types/base';
+import { randomBytes } from 'crypto';
+import fetch from 'cross-fetch';
+
+export class OAuth {
+
+	@Inject('logger') private static logger: ILogger;
+	private static options: IOptions;
+
+	public static setOptions(options: IOptions): void {
+		if (options.oauth && options.oauth.secret && options.oauth.scopes && options.oauth.baseUrl) {
+			this.options = options;
+		} else {
+			throw new Error('Discord OAuth options are not valid / complete.');
+		}
+	}
+
+	public static DoAuthorisation(redirectPath: string, context: Http.Context): void {
+
+		// Get the response.
+		const response = context.getResponse();
+
+		// Redirect to discord for authorisation.
+		response.redirect(this.getUrl({
+			client_id: this.options.clientId,
+			redirect_uri: `${this.options.oauth?.baseUrl}${redirectPath}`,
+			response_type: 'code',
+			scope: (this.options.oauth?.scopes as string[]).join(' '),
+		}));
+	}
+
+	/**
+	 *
+	 * @param redirectPath The path to redirect to.
+	 * @param context
+	 * @returns
+	 */
+	public static async DoToken(redirectPath: string, context: Http.Context): Promise<Record<string, any> | null> {
+
+		// Get the query data.
+		const query = context.getQuery();
+
+		// If error, log it and return error information.
+		if (query.error) {
+			this.logger.error('PLUGIN:DISCORD', `Failed to accept authorisation response: ${query.error}`, new Error(query.error));
+			return { status: false, error: query.error, reason: query.error_description };
+		}
+
+		// Accept the payload and formulate fetch request.
+		const payload = new URLSearchParams();
+		payload.append('client_id', this.options.clientId);
+		payload.append('client_secret', (this.options.oauth?.secret as string));
+		payload.append('grant_type', 'authorization_code');
+		payload.append('code', query.code);
+		payload.append('redirect_uri', `${this.options.oauth?.baseUrl}${redirectPath}`);
+		payload.append('scope', (this.options.oauth?.scopes as string[]).join(' '));
+
+		// Send the token request.
+		const authResponse = await fetch('https://discord.com/api/oauth2/token', {
+			method: 'POST',
+			body: payload,
+			headers: {
+				Authorization: `Basic ${Buffer.from(`${this.options.clientId}:${this.options.oauth?.secret}`).toString('base64')}`,
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+		});
+
+		// If authorisation failed, return error and log it.
+		if (authResponse.status !== 200) {
+			this.logger.error('PLUGIN:DISCORD', `Failed to accept token response: ${authResponse.status}`, new Error(authResponse.statusText));
+			return { status: false, error: authResponse.statusText, reason: authResponse.status };
+		}
+
+		// Return the token information.
+		const authData = (await authResponse.json() as Record<string, string>);
+		return { status: true, ...authData };
+	}
+
+	/**
+	 * Get the user information, based on the scopes given.
+	 *
+	 * @param token The user's token.
+	 * @returns Record<string, any>
+	 */
+	public static async GetUser(token: string): Promise<Record<string, any> | null> {
+
+		// Make the request.
+		const response =  await fetch('https://discord.com/api/users/@me', {
+			headers: { Authorization: `Bearer ${token}` },
+		});
+
+		// Check for valid response.
+		if (response.status !== 200) {
+			this.logger.error('PLUGIN:DISCORD', `Failed to get user information: ${response.status}`, new Error(response.statusText));
+			return null;
+		}
+
+		// Return the data.
+		return await response.json();
+	}
+
+	/**
+	 * Will accept an object of options and return a URL string with the options
+	 * added as query parameters.
+	 *
+	 * @param options Object of options to append.
+	 * @returns string
+	 */
+	public static getUrl(options: Record<string, string>): string {
+		const baseUrl = 'https://discord.com/api/oauth2/authorize?';
+		return baseUrl + Object.entries(options).map(([key, value]) => `${key}=${value}`).join('&');
+	}
+
+	/**
+	 * Generates a cryptographically secure random string, and is used as the users
+	 * session token and is also used as the user's cookie.
+	 */
+	public static async getToken(): Promise<string> {
+		return await new Promise((resolve, reject) => {
+			randomBytes(32, (err: Error | null, buffer: Buffer) => {
+				if (err) reject(err);
+				resolve(buffer.toString('hex'));
+			});
+		});
+	}
+}

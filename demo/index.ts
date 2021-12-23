@@ -1,4 +1,4 @@
-import { Engine } from '@symbux/turbo';
+import { Engine, HttpPlugin } from '@symbux/turbo';
 import { resolve } from 'path';
 import DiscordPlugin from '../src/index';
 import { config as configureDotenv } from 'dotenv';
@@ -16,13 +16,15 @@ const engine = new Engine({
 	},
 });
 
+// Register the http plugin.
+engine.use(new HttpPlugin({
+	port: 5500,
+}));
+
 // Register plugin.
 engine.use(new DiscordPlugin({
 	botToken: String(process.env.BOT_TOKEN),
 	clientId: String(process.env.CLIENT_ID),
-	clientSecret: String(process.env.CLIENT_SECRET),
-	enableOauth: true,
-	baseAuthPath: '/discord/auth',
 	activityInterval: 5,
 	activities: [
 		{ type: 'WATCHING', text: 'the server.' },
@@ -30,6 +32,11 @@ engine.use(new DiscordPlugin({
 		{ type: 'WATCHING', text: 'the farms.' },
 		{ type: 'WATCHING', text: 'the factions.' },
 	],
+	oauth: {
+		baseUrl: 'http://localhost:5500/auth',
+		scopes: ['identify', 'guilds', 'email', 'connections'],
+		secret: String(process.env.CLIENT_SECRET),
+	},
 }));
 
 // Start engine.
