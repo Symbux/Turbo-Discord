@@ -1,9 +1,9 @@
 {
-  "name": "@symbux/turbo-plugin-discord",
+  "name": "@symbux/turbo-discord",
   "version": "0.1.0",
   "description": "A discord plugin for the Turbo engine.",
   "main": "dist/index.js",
-  "repository": "git@github.com:Symbux/Turbo-Plugin-Discord.git",
+  "repository": "git@github.com:Symbux/Turbo-Discord.git",
   "author": "Symbux Dev <hello@symbux.dev> (https://symbux.dev)",
   "license": "Apache-2.0",
   "private": false,

@@ -7,6 +7,7 @@ export class OAuth {
 
 	@Inject('logger') private static logger: ILogger;
 	private static options: IOptions;
+	private static redirectPath: string;
 
 	public static setOptions(options: IOptions): void {
 		if (options.oauth && options.oauth.secret && options.oauth.scopes && options.oauth.baseUrl && options.oauth.id) {
@@ -25,6 +26,7 @@ export class OAuth {
 
 		// Get the response.
 		const response = context.getResponse();
+		this.redirectPath = redirectPath;
 
 		// Redirect to discord for authorisation.
 		response.redirect(this.getUrl({
@@ -41,7 +43,7 @@ export class OAuth {
 	 * @param context
 	 * @returns
 	 */
-	public static async DoToken(redirectPath: string, context: Http.Context): Promise<Record<string, any> | null> {
+	public static async DoAccept(context: Http.Context): Promise<Record<string, any> | null> {
 
 		// Check the options.
 		if (!this.hasValidOptions()) {
@@ -63,7 +65,7 @@ export class OAuth {
 		payload.append('client_secret', (this.options.oauth?.secret as string));
 		payload.append('grant_type', 'authorization_code');
 		payload.append('code', query.code);
-		payload.append('redirect_uri', `${this.options.oauth?.baseUrl}${redirectPath}`);
+		payload.append('redirect_uri', `${this.options.oauth?.baseUrl}${this.redirectPath}`);
 		payload.append('scope', (this.options.oauth?.scopes as string[]).join(' '));
 
 		// Send the token request.

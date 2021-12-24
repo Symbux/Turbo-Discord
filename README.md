@@ -1,14 +1,14 @@
 <p align="center">
 	<a href="#">
-		<img width="300" src="https://raw.githubusercontent.com/Symbux/Turbo-Plugin-Discord/master/logo.svg">
+		<img width="300" src="https://raw.githubusercontent.com/Symbux/Turbo-Discord/master/logo.svg">
 	</a>
 </p>
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Symbux/Turbo-Plugin-Discord/Build)
-![GitHub issues](https://img.shields.io/github/issues/Symbux/Turbo-Plugin-Discord)
-![NPM](https://img.shields.io/npm/l/@symbux/turbo-plugin-discord)
-![npm (scoped)](https://img.shields.io/npm/v/@symbux/turbo-plugin-discord)
-![npm](https://img.shields.io/npm/dw/@symbux/turbo-plugin-discord)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Symbux/Turbo-Discord/Build)
+![GitHub issues](https://img.shields.io/github/issues/Symbux/Turbo-Discord)
+![NPM](https://img.shields.io/npm/l/@symbux/turbo-discord)
+![npm (scoped)](https://img.shields.io/npm/v/@symbux/turbo-discord)
+![npm](https://img.shields.io/npm/dw/@symbux/turbo-discord)
 
 
 The Turbo Plugin Discord is an extension to the Turbo engine that offers support for managing and controlling a discord bot, to work inline with the familiar controller structure.
@@ -33,12 +33,12 @@ The Turbo Plugin Discord is an extension to the Turbo engine that offers support
 
 With Yarn:
 ```bash
-yarn add @symbux/turbo @symbux/turbo-plugin-discord
+yarn add @symbux/turbo @symbux/turbo-discord
 ```
 
 With NPM:
 ```bash
-npm install --save @symbux/turbo @symbux/turbo-plugin-discord
+npm install --save @symbux/turbo @symbux/turbo-discord
 ```
 
 <br>
@@ -49,11 +49,11 @@ npm install --save @symbux/turbo @symbux/turbo-plugin-discord
 
 ## Getting Started
 
-[You can find the documentation here](https://github.com/Symbux/Turbo-Plugin-Discord/wiki).
+[You can find the documentation here](https://github.com/Symbux/Turbo-Discord/wiki).
 
 ```typescript
 import { Engine, HttpPlugin } from '@symbux/turbo';
-import DiscordPlugin from '@symbux/turbo-plugin-discord';
+import DiscordPlugin from '@symbux/turbo-discord';
 
 // Initialise engine instance.
 const engine = new Engine({

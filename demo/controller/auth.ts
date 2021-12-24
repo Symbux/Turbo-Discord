@@ -13,7 +13,7 @@ export class AuthController extends AbstractController {
 	public async accept(context: Http.Context): Promise<Http.Response> {
 
 		// Retrieve the token.
-		const result = await OAuth.DoToken('/accept', context);
+		const result = await OAuth.DoAccept(context);
 		if (!result || result.status === false) {
 			return new Http.Response(200, 'There was a problem getting the token. :(');
 		}
