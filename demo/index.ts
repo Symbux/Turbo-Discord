@@ -23,16 +23,18 @@ engine.use(new HttpPlugin({
 
 // Register plugin.
 engine.use(new DiscordPlugin({
-	botToken: String(process.env.BOT_TOKEN),
-	clientId: String(process.env.CLIENT_ID),
-	activityInterval: 5,
-	activities: [
-		{ type: 'WATCHING', text: 'the server.' },
-		{ type: 'WATCHING', text: 'the economy.' },
-		{ type: 'WATCHING', text: 'the farms.' },
-		{ type: 'WATCHING', text: 'the factions.' },
-	],
+	bot: {
+		token: String(process.env.BOT_TOKEN),
+		interval: 5,
+		activities: [
+			{ type: 'WATCHING', text: 'the server.' },
+			{ type: 'WATCHING', text: 'the economy.' },
+			{ type: 'WATCHING', text: 'the farms.' },
+			{ type: 'WATCHING', text: 'the factions.' },
+		],
+	},
 	oauth: {
+		id: String(process.env.CLIENT_ID),
 		baseUrl: 'http://localhost:5500/auth',
 		scopes: ['identify', 'guilds', 'email', 'connections'],
 		secret: String(process.env.CLIENT_SECRET),

@@ -4,7 +4,7 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Injector } from '@symbux/injector';
-import { IOptions } from '../types/base';
+import { IActivityItem, IOptions } from '../types/base';
 import { Wait } from '../helper/misc';
 import { Context } from './context';
 import { Queue } from '../module/queue';
@@ -26,6 +26,7 @@ export class DiscordService extends AbstractService implements IService {
 	private controllers: Array<any> = [];
 	private queue: Queue;
 	private session: Session;
+	private currentActivityIndex = 0;
 
 	/**
 	 * Creates an instance of the Discord bot service.
@@ -43,40 +44,90 @@ export class DiscordService extends AbstractService implements IService {
 
 	public async initialise(): Promise<void> {
 
-		// Create the discord bot client.
-		this.logger.verbose('PLUGIN:DISCORD', 'Initialising the Discord service.');
-		this.client = new Client({ intents: [ Intents.FLAGS.GUILDS ]});
-		this.client.on('ready', () => {
-			this.logger.info('PLUGIN:DISCORD', 'The discord bot is now connected.');
-			this.client.user?.setActivity(this.options.startActivity);
+		// Firstly check the bot or oauth section exists.
+		if (!this.options.bot && !this.options.oauth) {
+			this.logger.warn('PLUGIN:DISCORD', 'No discord bot or oauth options found, aborting initialisation.');
+			return;
+		}
 
-			// Register the commands, once connected.
-			this.registerCommands();
-		});
+		// Create the discord bot client, if options present.
+		if (this.options.bot, this.options.bot.token) {
+			this.logger.verbose('PLUGIN:DISCORD', 'Initialising the Discord service.');
+			this.client = new Client({ intents: [ Intents.FLAGS.GUILDS ]});
+			this.client.on('ready', () => {
+				this.logger.info('PLUGIN:DISCORD', 'The discord bot is now connected.');
 
-		// Setup and handle the controllers.
-		const controllers = Registry.getModules('controller');
-		this.controllers = controllers.filter(controller => {
-			controller.methods = DecoratorHelper.getMetadata('t:methods', [], controller.instance);
-			const requiredPlugin = DecoratorHelper.getMetadata('t:plugin', 'none', controller.module);
-			return requiredPlugin === 'discord';
-		});
+				// Check for activities.
+				if (this.options.bot.activities) {
 
-		// Setup incoming events.
-		this.setupEvents();
+					// Re-type the activities.
+					const activities = this.options.bot.activities as IActivityItem | IActivityItem[];
+					const interval = this.options.bot.interval || 10;
+
+					// Check if an array, and then call the get next activity function.
+					if (activities instanceof Array) {
+
+						// Set the first status.
+						const activity = this.getNextActivity(activities);
+						this.client.user?.setActivity({
+							name: activity.text,
+							type: activity.type,
+							url: activity.url,
+							shardId: activity.shardId,
+						});
+
+						// Create an interval to change the status.
+						setInterval(() => {
+							const activity = this.getNextActivity(activities);
+							this.client.user?.setActivity({
+								name: activity.text,
+								type: activity.type,
+								url: activity.url,
+								shardId: activity.shardId,
+							});
+						}, interval * 60000);
+					} else {
+						this.client.user?.setActivity({
+							name: activities.text,
+							type: activities.type,
+							url: activities.url,
+							shardId: activities.shardId,
+						});
+					}
+				}
+
+				// Register the commands, once connected.
+				this.registerCommands();
+			});
+
+			// Setup and handle the controllers.
+			const controllers = Registry.getModules('controller');
+			this.controllers = controllers.filter(controller => {
+				controller.methods = DecoratorHelper.getMetadata('t:methods', [], controller.instance);
+				const requiredPlugin = DecoratorHelper.getMetadata('t:plugin', 'none', controller.module);
+				return requiredPlugin === 'discord';
+			});
+
+			// Setup incoming events.
+			this.setupEvents();
+		}
 	}
 
 	public async start(): Promise<void> {
-		this.logger.info('PLUGIN:DISCORD', 'Starting the Discord service.');
-		this.client.login(this.options.botToken).catch(err => {
-			const loginError = err as Error;
-			this.logger.error('PLUGIN:DISCORD', `Failed to connect to discord, error: ${loginError.message}`, loginError);
-		});
+		if (this.options.bot && this.options.bot.token) {
+			this.logger.info('PLUGIN:DISCORD', 'Starting the Discord service.');
+			this.client.login(this.options.bot.token).catch(err => {
+				const loginError = err as Error;
+				this.logger.error('PLUGIN:DISCORD', `Failed to connect to discord, error: ${loginError.message}`, loginError);
+			});
+		}
 	}
 
 	public async stop(): Promise<void> {
-		this.logger.info('PLUGIN:DISCORD', 'Stopping the Discord service.');
-		this.client.destroy();
+		if (this.options.bot && this.options.bot.token) {
+			this.logger.info('PLUGIN:DISCORD', 'Stopping the Discord service.');
+			this.client.destroy();
+		}
 	}
 
 	private async registerCommands(): Promise<void> {
@@ -116,8 +167,10 @@ export class DiscordService extends AbstractService implements IService {
 
 		// Register the commands with all connected guilds.
 		this.client.guilds.cache.forEach(async guild => {
-			const request = new REST({ version: '9' }).setToken(this.options.botToken);
-			await request.put(Routes.applicationGuildCommands(this.options.clientId, guild.id), { body: slashCommands });
+			const request = new REST({ version: '9' }).setToken(this.options.bot.token);
+			const userId = this.client.user?.id;
+			if (!userId) throw new Error('Failed to get the user id from client.');
+			await request.put(Routes.applicationGuildCommands(userId, guild.id), { body: slashCommands });
 		});
 
 		// Note success.
@@ -237,19 +290,54 @@ export class DiscordService extends AbstractService implements IService {
 		await controller.instance[controllerMethod](context);
 	}
 
+	/**
+	 * Will process the select menu interaction.
+	 *
+	 * @param interaction The interaction for the event.
+	 * @returns Promise<void>
+	 * @private
+	 * @async
+	 */
 	private async onSelectMenu(interaction: SelectMenuInteraction<CacheType>): Promise<void> {
 		console.log(interaction);
 	}
 
+	/**
+	 * Will get and return a controller by the name, or false
+	 * if not found.
+	 *
+	 * @param commandName The name of the command.
+	 * @returns AbstractController | false
+	 */
 	private getController(commandName: string): any {
 		const controllers = this.controllers.filter(controller => controller.command === commandName);
 		if (controllers.length === 0) return false;
 		return controllers[0];
 	}
 
+	/**
+	 * Will get and return a controller by custom ID, or false
+	 * if not found.
+	 *
+	 * @param customId The custom ID of the controller.
+	 * @returns AbstractController | false
+	 */
 	private getControllerByCustomId(customId: string): any {
 		const controllers = this.controllers.filter(controller => controller.unique === customId);
 		if (controllers.length === 0) return false;
 		return controllers[0];
+	}
+
+	/**
+	 * Will return the next activity item from the given array.
+	 *
+	 * @param activities The activities array.
+	 * @returns IActivityItem
+	 */
+	private getNextActivity(activities: IActivityItem[]): IActivityItem {
+		if (this.currentActivityIndex >= activities.length) {
+			this.currentActivityIndex = 0;
+		}
+		return activities[this.currentActivityIndex++];
 	}
 }

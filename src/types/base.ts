@@ -6,11 +6,13 @@ export interface IMiddleware extends IGenericMiddleware {
 }
 
 export interface IOptions {
-	botToken: string;
-	clientId: string;
-	activityInterval?: number;
-	activities?: IActivityItem | IActivityItem[];
+	bot?: {
+		token: string;
+		activities?: IActivityItem | IActivityItem[];
+		interval?: number;
+	}
 	oauth?: {
+		id: string;
 		secret: string;
 		scopes: string[];
 		baseUrl: string;

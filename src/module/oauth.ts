@@ -1,7 +1,6 @@
 import { Http, ILogger } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
 import { IOptions } from '../types/base';
-import { randomBytes } from 'crypto';
 import fetch from 'cross-fetch';
 
 export class OAuth {
@@ -10,7 +9,7 @@ export class OAuth {
 	private static options: IOptions;
 
 	public static setOptions(options: IOptions): void {
-		if (options.oauth && options.oauth.secret && options.oauth.scopes && options.oauth.baseUrl) {
+		if (options.oauth && options.oauth.secret && options.oauth.scopes && options.oauth.baseUrl && options.oauth.id) {
 			this.options = options;
 		} else {
 			throw new Error('Discord OAuth options are not valid / complete.');
@@ -19,12 +18,17 @@ export class OAuth {
 
 	public static DoAuthorisation(redirectPath: string, context: Http.Context): void {
 
+		// Check the options.
+		if (!this.hasValidOptions()) {
+			throw new Error('Discord OAuth options are not valid / complete.');
+		}
+
 		// Get the response.
 		const response = context.getResponse();
 
 		// Redirect to discord for authorisation.
 		response.redirect(this.getUrl({
-			client_id: this.options.clientId,
+			client_id: String(this.options.oauth?.id),
 			redirect_uri: `${this.options.oauth?.baseUrl}${redirectPath}`,
 			response_type: 'code',
 			scope: (this.options.oauth?.scopes as string[]).join(' '),
@@ -39,6 +43,11 @@ export class OAuth {
 	 */
 	public static async DoToken(redirectPath: string, context: Http.Context): Promise<Record<string, any> | null> {
 
+		// Check the options.
+		if (!this.hasValidOptions()) {
+			throw new Error('Discord OAuth options are not valid / complete.');
+		}
+
 		// Get the query data.
 		const query = context.getQuery();
 
@@ -50,7 +59,7 @@ export class OAuth {
 
 		// Accept the payload and formulate fetch request.
 		const payload = new URLSearchParams();
-		payload.append('client_id', this.options.clientId);
+		payload.append('client_id', String(this.options.oauth?.id));
 		payload.append('client_secret', (this.options.oauth?.secret as string));
 		payload.append('grant_type', 'authorization_code');
 		payload.append('code', query.code);
@@ -62,7 +71,7 @@ export class OAuth {
 			method: 'POST',
 			body: payload,
 			headers: {
-				Authorization: `Basic ${Buffer.from(`${this.options.clientId}:${this.options.oauth?.secret}`).toString('base64')}`,
+				Authorization: `Basic ${Buffer.from(`${this.options.oauth?.id}:${this.options.oauth?.secret}`).toString('base64')}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		});
@@ -86,6 +95,11 @@ export class OAuth {
 	 */
 	public static async GetUser(token: string): Promise<Record<string, any> | null> {
 
+		// Check the options.
+		if (!this.hasValidOptions()) {
+			throw new Error('Discord OAuth options are not valid / complete.');
+		}
+
 		// Make the request.
 		const response =  await fetch('https://discord.com/api/users/@me', {
 			headers: { Authorization: `Bearer ${token}` },
@@ -108,21 +122,22 @@ export class OAuth {
 	 * @param options Object of options to append.
 	 * @returns string
 	 */
-	public static getUrl(options: Record<string, string>): string {
+	private static getUrl(options: Record<string, string>): string {
 		const baseUrl = 'https://discord.com/api/oauth2/authorize?';
 		return baseUrl + Object.entries(options).map(([key, value]) => `${key}=${value}`).join('&');
 	}
 
-	/**
-	 * Generates a cryptographically secure random string, and is used as the users
-	 * session token and is also used as the user's cookie.
-	 */
-	public static async getToken(): Promise<string> {
-		return await new Promise((resolve, reject) => {
-			randomBytes(32, (err: Error | null, buffer: Buffer) => {
-				if (err) reject(err);
-				resolve(buffer.toString('hex'));
-			});
-		});
+	private static hasValidOptions(): boolean {
+		if (
+			this.options.oauth &&
+			this.options.oauth.secret &&
+			this.options.oauth.scopes &&
+			this.options.oauth.baseUrl &&
+			this.options.oauth.id
+		) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
