@@ -4,16 +4,12 @@ import { Context } from './service/context';
 import { IMiddleware, IOptions, IActivityItem } from './types/base';
 import { AbstractCommand } from './abstract/command';
 import { Command } from './decorator/command';
-import { Permissions } from './decorator/permissions';
-import { Roles } from './decorator/roles';
 import { OAuth } from './module/oauth';
 import * as On from './decorator/on-event';
 
 export {
 	AbstractCommand,
 	Command,
-	Permissions,
-	Roles,
 	OAuth,
 	On,
 	DiscordService,

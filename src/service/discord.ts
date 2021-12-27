@@ -225,10 +225,10 @@ export class DiscordService extends AbstractService implements IService {
 
 		// Verify the controller.
 		const controller = this.getController(interaction.commandName);
-		if (!controller) throw new Error('NO_CONTROLLER');
+		if (!controller) throw new Error('Could not find valid controller to serve the command.');
 
 		// Now we need to find the default command.
-		if (!Object.keys(controller.uniqueNames).includes('_')) throw new Error('NO_METHOD');
+		if (!Object.keys(controller.uniqueNames).includes('_')) throw new Error('No valid method found to serve the command.');
 		const controllerMethod = controller.uniqueNames._;
 
 		// Found, let's build a context.
@@ -237,12 +237,14 @@ export class DiscordService extends AbstractService implements IService {
 		// Now we need to run authentication.
 		const authResponse = await this.auth.handle('discord', context, controller.instance, controllerMethod);
 		if (authResponse.failed && authResponse.stop) {
-			throw new Error('AUTH_FAILED');
+			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
+			return;
 		}
 
 		// Check for standard stop.
 		if (!authResponse.failed && authResponse.stop) {
-			throw new Error('NO_EXECUTE');
+			this.logger.warn('PLUGIN:DISCORD', 'The command was stopped by middleware.');
+			return;
 		}
 
 		// Now call the method with the context.
@@ -266,10 +268,10 @@ export class DiscordService extends AbstractService implements IService {
 
 		// Now we need to check for controllers matching the first part of the custom ID.
 		const controller = this.getControllerByCustomId(customId);
-		if (!controller) throw new Error('NO_CONTROLLER');
+		if (!controller) throw new Error('Could not find valid controller to serve the command.');
 
 		// Now we need to find the default command.
-		if (!Object.keys(controller.uniqueNames).includes(value)) throw new Error('NO_METHOD');
+		if (!Object.keys(controller.uniqueNames).includes(value)) throw new Error('No valid method found to serve the command.');
 		const controllerMethod = controller.uniqueNames[value];
 
 		// Found, let's build a context.
@@ -278,12 +280,14 @@ export class DiscordService extends AbstractService implements IService {
 		// Now we need to run authentication.
 		const authResponse = await this.auth.handle('discord', context, controller.instance, controllerMethod);
 		if (authResponse.failed && authResponse.stop) {
-			throw new Error('AUTH_FAILED');
+			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
+			return;
 		}
 
 		// Check for standard stop.
 		if (!authResponse.failed && authResponse.stop) {
-			throw new Error('NO_EXECUTE');
+			this.logger.warn('PLUGIN:DISCORD', 'The command was stopped by middleware.');
+			return;
 		}
 
 		// Now call the method with the context.
@@ -299,7 +303,46 @@ export class DiscordService extends AbstractService implements IService {
 	 * @async
 	 */
 	private async onSelectMenu(interaction: SelectMenuInteraction<CacheType>): Promise<void> {
-		console.log(interaction);
+
+		// Define data.
+		const [customId, value] = interaction.customId.split(':');
+
+		// Check if the value is an internal checking function.
+		if (customId.startsWith('internal')) return;
+
+		// Firstly let's check the queue.
+		const queueItem = this.queue.get(customId, interaction.user.id);
+		if (queueItem !== null) {
+			queueItem.resolve([value, interaction]);
+			return;
+		}
+
+		// Now we need to check for controllers matching the first part of the custom ID.
+		const controller = this.getControllerByCustomId(customId);
+		if (!controller) throw new Error('Could not find valid controller to serve the command.');
+
+		// Now we need to find the default command.
+		if (!Object.keys(controller.uniqueNames).includes(value)) throw new Error('No valid method found to serve the command.');
+		const controllerMethod = controller.uniqueNames[value];
+
+		// Found, let's build a context.
+		const context = new Context(interaction, 'command', this.queue, this.session);
+
+		// Now we need to run authentication.
+		const authResponse = await this.auth.handle('discord', context, controller.instance, controllerMethod);
+		if (authResponse.failed && authResponse.stop) {
+			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
+			return;
+		}
+
+		// Check for standard stop.
+		if (!authResponse.failed && authResponse.stop) {
+			this.logger.warn('PLUGIN:DISCORD', 'The command was stopped by middleware.');
+			return;
+		}
+
+		// Now call the method with the context.
+		await controller.instance[controllerMethod](context);
 	}
 
 	/**
