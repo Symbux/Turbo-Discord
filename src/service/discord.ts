@@ -18,7 +18,6 @@ import { Session } from '../module/session';
  * @extends AbstractService
  * @implements IService
  * @plugin Discord
- * @inject logger
  * @provides DiscordService, IOptions
  */
 export class DiscordService extends AbstractService implements IService {
@@ -42,6 +41,13 @@ export class DiscordService extends AbstractService implements IService {
 		this.session = new Session();
 	}
 
+	/**
+	 * Initializes the discord bot and all settings if enabled.
+	 *
+	 * @returns Promise<void>
+	 * @async
+	 * @public
+	 */
 	public async initialise(): Promise<void> {
 
 		// Firstly check the bot or oauth section exists.
@@ -113,6 +119,13 @@ export class DiscordService extends AbstractService implements IService {
 		}
 	}
 
+	/**
+	 * Starts the discord bot, if enabled.
+	 *
+	 * @returns Promise<void>
+	 * @async
+	 * @public
+	 */
 	public async start(): Promise<void> {
 		if (this.options.bot && this.options.bot.token) {
 			this.logger.info('PLUGIN:DISCORD', 'Starting the Discord service.');
@@ -123,6 +136,13 @@ export class DiscordService extends AbstractService implements IService {
 		}
 	}
 
+	/**
+	 * Stops the discord bot, if enabled.
+	 *
+	 * @returns Promise<void>
+	 * @async
+	 * @public
+	 */
 	public async stop(): Promise<void> {
 		if (this.options.bot && this.options.bot.token) {
 			this.logger.info('PLUGIN:DISCORD', 'Stopping the Discord service.');
@@ -130,6 +150,13 @@ export class DiscordService extends AbstractService implements IService {
 		}
 	}
 
+	/**
+	 * Register the commands based on the imported controllers.
+	 *
+	 * @returns Promise<void>
+	 * @private
+	 * @async
+	 */
 	private async registerCommands(): Promise<void> {
 
 		// Define the slash commands array.
@@ -177,12 +204,26 @@ export class DiscordService extends AbstractService implements IService {
 		this.logger.verbose('PLUGIN:DISCORD', `Registered ${slashCommands.length} commands.`);
 	}
 
+	/**
+	 * Set's up the interaction create events.
+	 *
+	 * @returns void
+	 * @private
+	 */
 	private setupEvents(): void {
 		this.client.on('interactionCreate', interaction => {
 			this.handleInteraction(interaction);
 		});
 	}
 
+	/**
+	 * Accepts the generic interaction and dispatches it to the specific handler.
+	 *
+	 * @param interaction The generic interaction.
+	 * @returns Promise<void>
+	 * @private
+	 * @async
+	 */
 	private async handleInteraction(interaction: Interaction<CacheType>): Promise<void> {
 		try {
 
@@ -221,6 +262,14 @@ export class DiscordService extends AbstractService implements IService {
 		}
 	}
 
+	/**
+	 * Handles the incoming command interactions.
+	 *
+	 * @param interaction The command interaction.
+	 * @returns Promise<void>
+	 * @private
+	 * @async
+	 */
 	private async onCommand(interaction: CommandInteraction<CacheType>): Promise<void> {
 
 		// Verify the controller.
@@ -251,6 +300,14 @@ export class DiscordService extends AbstractService implements IService {
 		await controller.instance[controllerMethod](context);
 	}
 
+	/**
+	 * Handles the incoming button interactions.
+	 *
+	 * @param interaction The button interaction.
+	 * @returns Promise<void>
+	 * @private
+	 * @async
+	 */
 	private async onButton(interaction: ButtonInteraction<CacheType>): Promise<void> {
 
 		// Define data.
@@ -351,6 +408,7 @@ export class DiscordService extends AbstractService implements IService {
 	 *
 	 * @param commandName The name of the command.
 	 * @returns AbstractController | false
+	 * @private
 	 */
 	private getController(commandName: string): any {
 		const controllers = this.controllers.filter(controller => controller.command === commandName);
@@ -364,6 +422,7 @@ export class DiscordService extends AbstractService implements IService {
 	 *
 	 * @param customId The custom ID of the controller.
 	 * @returns AbstractController | false
+	 * @private
 	 */
 	private getControllerByCustomId(customId: string): any {
 		const controllers = this.controllers.filter(controller => controller.unique === customId);
@@ -376,6 +435,7 @@ export class DiscordService extends AbstractService implements IService {
 	 *
 	 * @param activities The activities array.
 	 * @returns IActivityItem
+	 * @private
 	 */
 	private getNextActivity(activities: IActivityItem[]): IActivityItem {
 		if (this.currentActivityIndex >= activities.length) {

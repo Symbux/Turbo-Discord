@@ -3,6 +3,14 @@ import { Inject } from '@symbux/injector';
 import { IOptions } from '../types/base';
 import fetch from 'cross-fetch';
 
+/**
+ * The OAuth class can be called upon to run Discord SSO (OAuth2)
+ * functionality for a user's login and return data for you to process.
+ *
+ * @class OAuth
+ * @plugin Discord
+ * @injects logger
+ */
 export class OAuth {
 
 	@Inject('logger') private static logger: ILogger;

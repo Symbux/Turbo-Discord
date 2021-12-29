@@ -16,6 +16,7 @@ import { Wait } from '../helper/misc';
  *
  * @class Context
  * @plugin Discord
+ * @injects turbo.translator
  */
 export class Context {
 	@Inject('turbo.translator') private translator!: Translator;

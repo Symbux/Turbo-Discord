@@ -1,5 +1,12 @@
 import { IQueueItem, IQueueItemExtended } from '../types/base';
 
+/**
+ * The queue class allows you to save promises with unique information to them,
+ * so that later you can pick them up and resolve them.
+ *
+ * @class Queue
+ * @plugin Discord
+ */
 export class Queue {
 
 	private interval: NodeJS.Timeout | null = null;
