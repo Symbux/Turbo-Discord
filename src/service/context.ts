@@ -31,9 +31,9 @@ export class Context {
 	 */
 	public constructor(
 		private interaction: Interaction,
-		private interactionType: string,
-		private queue: Queue,
-		private session: Session,
+		public interactionType: string,
+		public queue: Queue,
+		public session: Session,
 	) {
 		this.languages = ['en-GB', 'en-US'];
 	}

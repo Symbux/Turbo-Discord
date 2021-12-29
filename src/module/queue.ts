@@ -22,6 +22,7 @@ export class Queue {
 		const item = this.queue.get(uniqueId);
 		if (!item) return null;
 		if (item.userId && item.userId !== userId) return null;
+		this.queue.delete(uniqueId);
 		return item;
 	}
 

@@ -1,7 +1,7 @@
 import { Http, ILogger } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
 import { IOptions } from '../types/base';
-import fetch from 'cross-fetch';
+import fetch, { Response } from 'cross-fetch';
 
 /**
  * The OAuth class can be called upon to run Discord SSO (OAuth2)
@@ -123,6 +123,47 @@ export class OAuth {
 
 		// Return the data.
 		return await response.json();
+	}
+
+	/**
+	 * Will return the fetch response, is used for simple GET methods.
+	 *
+	 * @param token The user's token.
+	 * @param apiPath The API path to fetch.
+	 * @returns Promise<Response>
+	 */
+	public static async DoFetch(token: string, apiPath: string): Promise<Response> {
+
+		// Check the options.
+		if (!this.hasValidOptions()) {
+			throw new Error('Discord OAuth options are not valid / complete.');
+		}
+
+		// Make the request.
+		return await fetch(`https://discord.com/api/${apiPath}`, {
+			headers: { Authorization: `Bearer ${token}` },
+		});
+	}
+
+	/**
+	 * Returns the headers, with that token defined ready for being used
+	 * with the `GetFetch` function.
+	 *
+	 * @param token The user's token.
+	 * @returns Record<string, string>
+	 */
+	public static GetHeaders(token: string): Record<string, string> {
+		return { Authorization: `Bearer ${token}` };
+	}
+
+	/**
+	 * Will return the fetch function to be called on as needed.
+	 *
+	 * @returns typeof fetch
+	 * @static
+	 */
+	public static GetFetch(): typeof fetch {
+		return fetch;
 	}
 
 	/**
