@@ -2,11 +2,29 @@
   "name": "@symbux/turbo-discord",
   "version": "0.1.0",
   "description": "A discord plugin for the Turbo engine.",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "repository": "git@github.com:Symbux/Turbo-Discord.git",
   "author": "Symbux Dev <hello@symbux.dev> (https://symbux.dev)",
   "license": "Apache-2.0",
   "private": false,
+  "homepage": "https://github.com/Symbux/Turbo-Discord#readme",
+  "bugs": {
+    "url": "https://github.com/Symbux/Turbo-Discord/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "turbo",
+    "engine",
+    "services",
+	"plugin",
+	"discord",
+	"oauth2",
+	"sso",
+	"discord-bot",
+	"bot"
+  ],
   "scripts": {
     "start": "ENV=development node -r ts-node/register demo/index.ts",
     "build": "rm -rf lib && tsc",
