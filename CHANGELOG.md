@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3](https://github.com/Symbux/Turbo-Discord/compare/v0.1.2...0.1.3) - 2021-12-30
+
+### Commits
+
+- Allowed the discord client to be injected. [`5ba6d8a`](https://github.com/Symbux/Turbo-Discord/commit/5ba6d8a77117eaa3dcca376231e5d77708c8756d)
+- Updated changelog. [`08232bc`](https://github.com/Symbux/Turbo-Discord/commit/08232bcb4f2421d026807b7fd24d1f3e17234985)
+
 ## [v0.1.2](https://github.com/Symbux/Turbo-Discord/compare/v0.1.1...v0.1.2) - 2021-12-30
 
 ### Commits
