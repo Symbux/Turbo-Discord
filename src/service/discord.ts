@@ -60,6 +60,7 @@ export class DiscordService extends AbstractService implements IService {
 		if (this.options.bot, this.options.bot.token) {
 			this.logger.verbose('PLUGIN:DISCORD', 'Initialising the Discord service.');
 			this.client = new Client({ intents: [ Intents.FLAGS.GUILDS ]});
+			Injector.register('discord', this.client);
 			this.client.on('ready', () => {
 				this.logger.info('PLUGIN:DISCORD', 'The discord bot is now connected.');
 

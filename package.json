@@ -1,6 +1,6 @@
 {
   "name": "@symbux/turbo-discord",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A discord plugin for the Turbo engine.",
   "main": "lib/index.js",
   "repository": "git@github.com:Symbux/Turbo-Discord.git",
@@ -18,12 +18,12 @@
     "turbo",
     "engine",
     "services",
-	"plugin",
-	"discord",
-	"oauth2",
-	"sso",
-	"discord-bot",
-	"bot"
+    "plugin",
+    "discord",
+    "oauth2",
+    "sso",
+    "discord-bot",
+    "bot"
   ],
   "scripts": {
     "start": "ENV=development node -r ts-node/register demo/index.ts",
