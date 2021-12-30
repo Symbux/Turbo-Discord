@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.2](https://github.com/Symbux/Turbo-Discord/compare/v0.1.1...v0.1.2) - 2021-12-30
+
+### Commits
+
+- Added support and new decorator for @On.SubCommand(unique: string). [`5e9790e`](https://github.com/Symbux/Turbo-Discord/commit/5e9790e9a5db5d5be020532879421a8667a6f812)
+- Updated the changelog. [`a07df17`](https://github.com/Symbux/Turbo-Discord/commit/a07df1736625e446871ff246ff0f6099f45cb343)
+- Bumped package version. [`43caf59`](https://github.com/Symbux/Turbo-Discord/commit/43caf590897a73e70b3819dc35bcecb10b800961)
+
 ## [v0.1.1](https://github.com/Symbux/Turbo-Discord/compare/v0.1.0...v0.1.1) - 2021-12-29
 
 ### Commits
