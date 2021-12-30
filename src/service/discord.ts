@@ -179,12 +179,18 @@ export class DiscordService extends AbstractService implements IService {
 
 			// Define the unique names.
 			controller.uniqueNames = {};
+			controller.uniqueSubNames = {};
 			for (const propertyKey in controller.methods) {
+				const isSubcommand = controller.methods[propertyKey].subcommand;
 				const uniqueId = controller.methods[propertyKey].unique;
-				if (uniqueId !== false) {
-					controller.uniqueNames[uniqueId] = propertyKey;
+				if (!isSubcommand) {
+					if (uniqueId !== false) {
+						controller.uniqueNames[uniqueId] = propertyKey;
+					} else {
+						controller.uniqueNames._ = propertyKey;
+					}
 				} else {
-					controller.uniqueNames._ = propertyKey;
+					controller.uniqueSubNames[uniqueId] = propertyKey;
 				}
 			}
 
@@ -229,7 +235,16 @@ export class DiscordService extends AbstractService implements IService {
 
 			// On command interaction.
 			if (interaction.isCommand()) {
-				await this.onCommand(interaction);
+
+				// Get subcommand name.
+				const subCommand = interaction.options.getSubcommand(false);
+
+				// If no subcommand, run the default.
+				if (!subCommand) {
+					await this.onCommand(interaction);
+				} else {
+					await this.onSubCommand(interaction, subCommand);
+				}
 			}
 
 			// On button interaction.
@@ -301,6 +316,44 @@ export class DiscordService extends AbstractService implements IService {
 	}
 
 	/**
+	 * Handles the incoming sub command interactions.
+	 *
+	 * @param interaction The command interaction.
+	 * @returns Promise<void>
+	 * @private
+	 * @async
+	 */
+	private async onSubCommand(interaction: CommandInteraction<CacheType>, subCommand: string): Promise<void> {
+
+		// Verify the controller.
+		const controller = this.getController(interaction.commandName);
+		if (!controller) throw new Error('Could not find valid controller to serve the command.');
+
+		// Now we need to find the default command.
+		if (!Object.keys(controller.uniqueSubNames).includes(subCommand)) throw new Error('No valid method found to serve the command.');
+		const controllerMethod = controller.uniqueSubNames[subCommand];
+
+		// Found, let's build a context.
+		const context = new Context(interaction, 'subcommand', this.queue, this.session);
+
+		// Now we need to run authentication.
+		const authResponse = await this.auth.handle('discord', context, controller.instance, controllerMethod);
+		if (authResponse.failed && authResponse.stop) {
+			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
+			return;
+		}
+
+		// Check for standard stop.
+		if (!authResponse.failed && authResponse.stop) {
+			this.logger.warn('PLUGIN:DISCORD', 'The command was stopped by middleware.');
+			return;
+		}
+
+		// Now call the method with the context.
+		await controller.instance[controllerMethod](context);
+	}
+
+	/**
 	 * Handles the incoming button interactions.
 	 *
 	 * @param interaction The button interaction.
@@ -332,7 +385,7 @@ export class DiscordService extends AbstractService implements IService {
 		const controllerMethod = controller.uniqueNames[value];
 
 		// Found, let's build a context.
-		const context = new Context(interaction, 'command', this.queue, this.session);
+		const context = new Context(interaction, 'button', this.queue, this.session);
 
 		// Now we need to run authentication.
 		const authResponse = await this.auth.handle('discord', context, controller.instance, controllerMethod);
@@ -383,7 +436,7 @@ export class DiscordService extends AbstractService implements IService {
 		const controllerMethod = controller.uniqueNames[value];
 
 		// Found, let's build a context.
-		const context = new Context(interaction, 'command', this.queue, this.session);
+		const context = new Context(interaction, 'selectmenu', this.queue, this.session);
 
 		// Now we need to run authentication.
 		const authResponse = await this.auth.handle('discord', context, controller.instance, controllerMethod);

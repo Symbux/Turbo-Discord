@@ -10,6 +10,24 @@ export function Command(): MethodDecorator {
 	return (target: any, propertyKey: symbol | string): void => {
 		DecoratorHelper.addMethod(target, propertyKey, {
 			'unique': false,
+			'subcommand': false,
+			'auth': {},
+		});
+	};
+}
+
+/**
+ * Defines a method as a sub command interaction handler.
+ *
+ * @param unique The unique key to handle.
+ * @returns MethodDecorator
+ * @plugin Discord
+ */
+export function SubCommand(unique: string): MethodDecorator {
+	return (target: any, propertyKey: symbol | string): void => {
+		DecoratorHelper.addMethod(target, propertyKey, {
+			'unique': unique,
+			'subcommand': true,
 			'auth': {},
 		});
 	};
@@ -26,6 +44,7 @@ export function Button(unique: string): MethodDecorator {
 	return (target: any, propertyKey: symbol | string): void => {
 		DecoratorHelper.addMethod(target, propertyKey, {
 			'unique': unique,
+			'subcommand': false,
 			'auth': {},
 		});
 	};
@@ -42,6 +61,7 @@ export function SelectMenu(unique: string): MethodDecorator {
 	return (target: any, propertyKey: symbol | string): void => {
 		DecoratorHelper.addMethod(target, propertyKey, {
 			'unique': unique,
+			'subcommand': false,
 			'auth': {},
 		});
 	};
