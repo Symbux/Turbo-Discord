@@ -268,12 +268,9 @@ export class DiscordService extends AbstractService implements IService {
 
 			// Send the error to the user.
 			if (interaction.isCommand()) {
-				if (!interaction.replied) {
-					return interaction.reply({
-						content: ':warning:  There was a problem completing that command.',
-						ephemeral: true,
-					});
-				}
+				interaction.editReply({
+					content: ':warning:  There was a problem completing that command.',
+				});
 			}
 		}
 	}
