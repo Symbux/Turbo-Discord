@@ -290,7 +290,7 @@ export class DiscordService extends AbstractService implements IService {
 		if (!controller) throw new Error('Could not find valid controller to serve the command.');
 
 		// Now we need to find the default command.
-		if (!Object.keys(controller.uniqueNames).includes('_')) throw new Error('No valid method found to serve the command.');
+		if (!Object.keys(controller.uniqueNames).includes('_')) throw new Error('No valid method found to serve the command interaction.');
 		const controllerMethod = controller.uniqueNames._;
 
 		// Found, let's build a context.
@@ -328,7 +328,7 @@ export class DiscordService extends AbstractService implements IService {
 		if (!controller) throw new Error('Could not find valid controller to serve the command.');
 
 		// Now we need to find the default command.
-		if (!Object.keys(controller.uniqueSubNames).includes(subCommand)) throw new Error('No valid method found to serve the command.');
+		if (!Object.keys(controller.uniqueSubNames).includes(subCommand)) throw new Error('No valid method found to serve the sub-command interaction.');
 		const controllerMethod = controller.uniqueSubNames[subCommand];
 
 		// Found, let's build a context.
@@ -379,7 +379,7 @@ export class DiscordService extends AbstractService implements IService {
 		if (!controller) throw new Error('Could not find valid controller to serve the command.');
 
 		// Now we need to find the default command.
-		if (!Object.keys(controller.uniqueNames).includes(value)) throw new Error('No valid method found to serve the command.');
+		if (!Object.keys(controller.uniqueNames).includes(value)) throw new Error('No valid method found to serve the button interaction.');
 		const controllerMethod = controller.uniqueNames[value];
 
 		// Found, let's build a context.
@@ -430,7 +430,7 @@ export class DiscordService extends AbstractService implements IService {
 		if (!controller) throw new Error('Could not find valid controller to serve the command.');
 
 		// Now we need to find the default command.
-		if (!Object.keys(controller.uniqueNames).includes(value)) throw new Error('No valid method found to serve the command.');
+		if (!Object.keys(controller.uniqueNames).includes(value)) throw new Error('No valid method found to serve the select menu interaction.');
 		const controllerMethod = controller.uniqueNames[value];
 
 		// Found, let's build a context.
