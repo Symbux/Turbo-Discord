@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.7](https://github.com/Symbux/Turbo-Discord/compare/v0.1.6...v0.1.7) - 2022-01-16
+
+### Commits
+
+- Added new intents system to manage cache/retrieval access. [`b37a4ae`](https://github.com/Symbux/Turbo-Discord/commit/b37a4ae5263c2791e78f2f5f592f93e6a1222831)
+- Added updated changelog. [`bfeeca6`](https://github.com/Symbux/Turbo-Discord/commit/bfeeca6472081a19d2b2487017f23ac72a834eb3)
+
 ## [v0.1.6](https://github.com/Symbux/Turbo-Discord/compare/v0.1.5...v0.1.6) - 2022-01-14
 
 ### Commits
