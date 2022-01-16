@@ -1,5 +1,5 @@
 import { AbstractService, Service, IService, Registry, DecoratorHelper } from '@symbux/turbo';
-import { Client, Intents, Interaction, CacheType, CommandInteraction, SelectMenuInteraction, ButtonInteraction } from 'discord.js';
+import { Client, Interaction, CacheType, CommandInteraction, SelectMenuInteraction, ButtonInteraction } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { SlashCommandBuilder } from '@discordjs/builders';
@@ -59,7 +59,7 @@ export class DiscordService extends AbstractService implements IService {
 		// Create the discord bot client, if options present.
 		if (this.options.bot, this.options.bot.token) {
 			this.logger.verbose('PLUGIN:DISCORD', 'Initialising the Discord service.');
-			this.client = new Client({ intents: [ Intents.FLAGS.GUILDS ]});
+			this.client = new Client({ intents: this.options.bot.intents || [] });
 			Injector.register('discord', this.client);
 			this.client.on('ready', () => {
 				this.logger.info('PLUGIN:DISCORD', 'The discord bot is now connected.');

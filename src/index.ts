@@ -8,6 +8,7 @@ import { Command } from './decorator/command';
 import { Queue } from './module/queue';
 import { Session } from './module/session';
 import { OAuth } from './module/oauth';
+import { Intents } from 'discord.js';
 import * as On from './decorator/on-event';
 import * as Misc from './helper/misc';
 
@@ -27,6 +28,7 @@ export {
 	IConfirmOptions,
 	Context,
 	Misc,
+	Intents,
 };
 
 /**
