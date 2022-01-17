@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.8](https://github.com/Symbux/Turbo-Discord/compare/v0.1.7...v0.1.8) - 2022-01-17
+
+### Commits
+
+- Updated changelog [`83afa9d`](https://github.com/Symbux/Turbo-Discord/commit/83afa9ddb398cdfe16529fc67b1e32dab1ee283e)
+- Added a fix to oauth api which was calling /api/oauth for some reason :S instead of /oauth. [`92ef3a8`](https://github.com/Symbux/Turbo-Discord/commit/92ef3a8f6e483fbf9242bd2e2bee78fd714757c2)
+- Bumped version. [`166ebc1`](https://github.com/Symbux/Turbo-Discord/commit/166ebc10bbc1b168584a455de1e0536109e1009d)
+
 ## [v0.1.7](https://github.com/Symbux/Turbo-Discord/compare/v0.1.6...v0.1.7) - 2022-01-16
 
 ### Commits
