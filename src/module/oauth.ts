@@ -1,7 +1,7 @@
 import { Http, ILogger } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
 import { IOptions } from '../types/base';
-import fetch, { Response } from 'cross-fetch';
+import fetch from 'cross-fetch';
 
 /**
  * The OAuth class can be called upon to run Discord SSO (OAuth2)
@@ -174,7 +174,7 @@ export class OAuth {
 	 * @returns string
 	 */
 	private static getUrl(options: Record<string, string>): string {
-		const baseUrl = 'https://discord.com/api/oauth2/authorize?';
+		const baseUrl = 'https://discord.com/oauth2/authorize?';
 		return baseUrl + Object.entries(options).map(([key, value]) => `${key}=${value}`).join('&');
 	}
 
