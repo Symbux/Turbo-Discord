@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.9](https://github.com/Symbux/Turbo-Discord/compare/v0.1.8...v0.1.9) - 2022-01-19
+
+### Commits
+
+- Switched from using 'TextBasedChannels' to TextChannel as discord was throwing an error that it doesn't exist... I dunno... [`5c68489`](https://github.com/Symbux/Turbo-Discord/commit/5c68489bc31feb94a24bd236533e8816b1cbbbf3)
+- Updated changelog. [`bdfc115`](https://github.com/Symbux/Turbo-Discord/commit/bdfc1151d9a5244d3977ca74c42ab2515a19eb21)
+- Bumped package version. [`1757239`](https://github.com/Symbux/Turbo-Discord/commit/1757239325f6c9e79188aa9b1db0efb07927f88b)
+
 ## [v0.1.8](https://github.com/Symbux/Turbo-Discord/compare/v0.1.7...v0.1.8) - 2022-01-17
 
 ### Commits
