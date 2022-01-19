@@ -1,8 +1,8 @@
 import {
-	Client, CommandInteraction, Guild, GuildMember,
-	Interaction, MessageActionRow, MessageButton, MessageEmbed,
-	PermissionResolvable, TextBasedChannels, User, Message,
-	MessageButtonStyleResolvable, MessageActionRowComponentResolvable,
+	Client, CommandInteraction, Guild, GuildMember, Interaction,
+	MessageActionRow, MessageButton, MessageEmbed, PermissionResolvable,
+	TextChannel, User, Message, MessageButtonStyleResolvable,
+	MessageActionRowComponentResolvable,
 } from 'discord.js';
 import { Translator } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
@@ -132,10 +132,10 @@ export class Context {
 	/**
 	 * Will return the channel the command was executed from.
 	 *
-	 * @returns TextBasedChannels
+	 * @returns typeof TextChannel
 	 */
-	public getChannel(): TextBasedChannels {
-		return this.interaction.channel as TextBasedChannels;
+	public getChannel(): TextChannel {
+		return this.interaction.channel as TextChannel;
 	}
 
 	/**
