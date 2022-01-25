@@ -1,9 +1,14 @@
 import { IGenericMiddleware } from '@symbux/turbo';
 import { Context } from '../service/context';
-import { BitFieldResolvable, IntentsString } from 'discord.js';
+import { BitFieldResolvable, IntentsString, ClientEvents } from 'discord.js';
+import { GenericContext } from '../service/generic-context';
 
 export interface IMiddleware extends IGenericMiddleware {
 	handle: (context: Context) => Promise<boolean>;
+}
+
+export interface IEventMiddleware extends IGenericMiddleware {
+	handle: (context: GenericContext) => Promise<boolean>;
 }
 
 export interface IOptions {
@@ -12,6 +17,7 @@ export interface IOptions {
 		activities?: IActivityItem | IActivityItem[];
 		interval?: number;
 		intents?: BitFieldResolvable<IntentsString, number>;
+		events?: Array<keyof ClientEvents>;
 	};
 	oauth?: {
 		id: string;

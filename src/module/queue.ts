@@ -5,7 +5,7 @@ import { IQueueItem, IQueueItemExtended } from '../types/base';
  * so that later you can pick them up and resolve them.
  *
  * @class Queue
- * @plugin Discord
+ * @plugin Turbo-Discord
  */
 export class Queue {
 

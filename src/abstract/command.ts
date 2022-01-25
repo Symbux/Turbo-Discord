@@ -5,7 +5,7 @@ import { GenerateKey } from '../helper/misc';
  * command's uniquely generated key and offers access to it.
  *
  * @class AbstractCommand
- * @plugin Discord
+ * @plugin Turbo-Discord
  */
 export class AbstractCommand {
 	private commandKey = GenerateKey(8);

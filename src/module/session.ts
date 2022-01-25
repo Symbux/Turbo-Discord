@@ -3,7 +3,7 @@
  * Session class for storing session data.
  *
  * @class Session
- * @plugin Discord
+ * @plugin Turbo-Discord
  */
 export class Session {
 	private sessionData: Record<string, Record<string, any>> = {};

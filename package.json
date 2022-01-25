@@ -30,7 +30,10 @@
     "build": "rm -rf lib && tsc",
     "lint": "eslint . --ext .ts",
     "prepublishOnly": "yarn lint && yarn build",
-    "changelog": "auto-changelog --template keepachangelog --commit-limit false --hide-credit"
+    "changelog": "auto-changelog --template keepachangelog --commit-limit false --hide-credit",
+    "add-peers": "yarn add --peer @symbux/turbo @symbux/injector --ignore-scripts",
+    "postinstall": "yarn add-peers",
+    "postuninstall": "yarn add-peers"
   },
   "peerDependencies": {
     "@symbux/injector": "^1.2.0",
@@ -46,8 +49,8 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@discordjs/builders": "^0.11.0",
-    "@discordjs/rest": "^0.2.0-canary.0",
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/rest": "^0.3.0",
     "cross-fetch": "^3.1.5",
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.6.0"

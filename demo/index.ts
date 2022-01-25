@@ -1,6 +1,6 @@
 import { Engine, HttpPlugin } from '@symbux/turbo';
 import { resolve } from 'path';
-import DiscordPlugin from '../src/index';
+import DiscordPlugin, { Intents } from '../src/index';
 import { config as configureDotenv } from 'dotenv';
 
 // Prepare dotenv.
@@ -26,6 +26,22 @@ engine.use(new DiscordPlugin({
 	bot: {
 		token: String(process.env.BOT_TOKEN),
 		interval: 5,
+		events: ['messageCreate'],
+		intents: [
+			Intents.FLAGS.GUILDS,
+			Intents.FLAGS.GUILD_MEMBERS,
+			Intents.FLAGS.GUILD_BANS,
+			Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
+			Intents.FLAGS.GUILD_MESSAGES,
+			Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+			Intents.FLAGS.GUILD_MESSAGE_TYPING,
+			Intents.FLAGS.GUILD_PRESENCES,
+			Intents.FLAGS.GUILD_VOICE_STATES,
+			Intents.FLAGS.GUILD_INVITES,
+			Intents.FLAGS.GUILD_INTEGRATIONS,
+			Intents.FLAGS.GUILD_WEBHOOKS,
+			Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
+		],
 		activities: [
 			{ type: 'WATCHING', text: 'the server.' },
 			{ type: 'WATCHING', text: 'the economy.' },

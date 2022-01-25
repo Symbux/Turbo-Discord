@@ -8,7 +8,7 @@ import fetch from 'cross-fetch';
  * functionality for a user's login and return data for you to process.
  *
  * @class OAuth
- * @plugin Discord
+ * @plugin Turbo-Discord
  * @injects logger
  */
 export class OAuth {

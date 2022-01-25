@@ -1,10 +1,13 @@
 import Engine, { IPlugin } from '@symbux/turbo';
 import { DiscordService } from './service/discord';
 import { Context } from './service/context';
-import { IMiddleware, IOptions, IActivityItem } from './types/base';
+import { GenericContext } from './service/generic-context';
+import { IMiddleware, IOptions, IActivityItem, IEventMiddleware, IQueueItem, IQueueItemExtended } from './types/base';
 import { IConfirmOptions } from './types/context';
 import { AbstractCommand } from './abstract/command';
+import { AbstractEvent } from './abstract/event';
 import { Command } from './decorator/command';
+import { Event } from './decorator/event';
 import { Queue } from './module/queue';
 import { Session } from './module/session';
 import { OAuth } from './module/oauth';
@@ -18,15 +21,18 @@ import * as Misc from './helper/misc';
  */
 export {
 	AbstractCommand,
+	AbstractEvent,
 	Command,
+	Event,
 	OAuth,
 	Queue,
 	Session,
 	On,
 	DiscordService,
-	IOptions, IActivityItem, IMiddleware,
+	IOptions, IActivityItem, IMiddleware, IEventMiddleware, IQueueItem, IQueueItemExtended,
 	IConfirmOptions,
 	Context,
+	GenericContext,
 	Misc,
 	Intents,
 };
@@ -36,7 +42,7 @@ export {
  * Comes with a bot and command structure following standard turbo engine
  * controllers, alongside an OAuth2 helper for managing authentication.
  *
- * @plugin Discord
+ * @plugin Turbo-Discord
  */
 export default class Plugin implements IPlugin {
 	public name = 'discord';

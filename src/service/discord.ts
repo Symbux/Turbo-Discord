@@ -1,5 +1,5 @@
 import { AbstractService, Service, IService, Registry, DecoratorHelper } from '@symbux/turbo';
-import { Client, Interaction, CacheType, CommandInteraction, SelectMenuInteraction, ButtonInteraction } from 'discord.js';
+import { Client, Interaction, CacheType, CommandInteraction, SelectMenuInteraction, ButtonInteraction, ClientEvents } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { SlashCommandBuilder } from '@discordjs/builders';
@@ -7,6 +7,7 @@ import { Injector } from '@symbux/injector';
 import { IActivityItem, IOptions } from '../types/base';
 import { Wait } from '../helper/misc';
 import { Context } from './context';
+import { GenericContext } from './generic-context';
 import { Queue } from '../module/queue';
 import { Session } from '../module/session';
 
@@ -17,7 +18,7 @@ import { Session } from '../module/session';
  * @class DiscordService
  * @extends AbstractService
  * @implements IService
- * @plugin Discord
+ * @plugin Turbo-Discord
  * @provides DiscordService, IOptions
  */
 export class DiscordService extends AbstractService implements IService {
@@ -61,7 +62,7 @@ export class DiscordService extends AbstractService implements IService {
 			this.logger.verbose('PLUGIN:DISCORD', 'Initialising the Discord service.');
 			this.client = new Client({ intents: this.options.bot.intents || [] });
 			Injector.register('discord', this.client);
-			this.client.on('ready', () => {
+			this.client.on('ready', async () => {
 				this.logger.info('PLUGIN:DISCORD', 'The discord bot is now connected.');
 
 				// Check for activities.
@@ -104,12 +105,15 @@ export class DiscordService extends AbstractService implements IService {
 				}
 
 				// Register the commands, once connected.
-				this.registerCommands();
+				await this.registerCommands();
+				await this.registerEvents();
 			});
 
 			// Setup and handle the controllers.
 			const controllers = Registry.getModules('controller');
 			this.controllers = controllers.filter(controller => {
+				controller.events = false;
+				controller.isGeneric = false;
 				controller.methods = DecoratorHelper.getMetadata('t:methods', [], controller.instance);
 				const requiredPlugin = DecoratorHelper.getMetadata('t:plugin', 'none', controller.module);
 				return requiredPlugin === 'discord';
@@ -146,9 +150,47 @@ export class DiscordService extends AbstractService implements IService {
 	 */
 	public async stop(): Promise<void> {
 		if (this.options.bot && this.options.bot.token) {
+			this.logger.info('PLUGIN:DISCORD', 'Unregistering the slash commands.');
+			await this.unregisterCommands();
 			this.logger.info('PLUGIN:DISCORD', 'Stopping the Discord service.');
 			this.client.destroy();
 		}
+	}
+
+	/**
+	 * Registers the generic events for Discord.
+	 *
+	 * @returns Promise<void>
+	 * @private
+	 * @async
+	 */
+	private async registerEvents(): Promise<void> {
+
+		// Let's loop the controllers and check for generic handlers.
+		this.controllers.forEach(controller => {
+
+			// Check if this controller is a generic type.
+			const isGeneric = DecoratorHelper.getMetadata('t:discord:type', '', controller.module);
+			if (isGeneric !== 'generic') return false;
+
+			// Assign the events to the controller.
+			controller.isGeneric = true;
+			controller.events = [];
+
+			// Now loop and map the events.
+			controller.eventsMap = {};
+			for (const propertyKey in controller.methods) {
+
+				// Define a unique property as an array, assign the class method.
+				const unique = controller.methods[propertyKey].unique;
+				if (typeof controller.eventsMap[unique] === 'undefined') controller.eventsMap[unique] = [];
+				controller.eventsMap[unique].push(propertyKey);
+
+				// Assign any events into the controller events list.
+				if (controller.events.includes(unique)) continue;
+				controller.events.push(unique);
+			}
+		});
 	}
 
 	/**
@@ -211,22 +253,89 @@ export class DiscordService extends AbstractService implements IService {
 		this.logger.verbose('PLUGIN:DISCORD', `Registered ${slashCommands.length} commands.`);
 	}
 
+	// Unregister the commands with all connected guilds.
+	private async unregisterCommands(): Promise<void> {
+		await Promise.all(this.client.guilds.cache.map(async guild => {
+			await Promise.all(guild.commands.cache.map(async command => {
+				command.delete();
+			}));
+		}));
+	}
+
 	/**
-	 * Set's up the interaction create events.
+	 * Set's up the interaction and generic events.
 	 *
 	 * @returns void
 	 * @private
 	 */
 	private setupEvents(): void {
+
+		// Create the interaction event.
 		this.client.on('interactionCreate', interaction => {
 			this.handleInteraction(interaction);
 		});
+
+		// Create generic event listeners, and link them up to the generic handler.
+		if (this.options.bot.events && this.options.bot.events instanceof Array) {
+			this.options.bot.events.forEach((event: keyof ClientEvents) => {
+				this.client.on(event, (...args: any[]) => {
+					this.handleEvent(event, ...args);
+				});
+			});
+		}
 	}
 
 	/**
-	 * Accepts the generic interaction and dispatches it to the specific handler.
+	 * Accepts the generic event from discord and passes it to a handler to
+	 * be routed and dispatched using the GenericContext, rather than the main
+	 * context due to the untyped nature.
 	 *
-	 * @param interaction The generic interaction.
+	 * @param event The event name.
+	 * @param args The event arguments.
+	 * @private
+	 * @async
+	 */
+	private async handleEvent(event: keyof ClientEvents, ...args: any[]): Promise<void> {
+		try {
+
+			// Verify the controller.
+			const controllers = this.getEventControllers(event);
+			if (controllers.length === 0) throw new Error('Could not find valid controller(s) to serve the event.');
+
+			// Now loop the controllers.
+			controllers.forEach(controller => {
+
+				// Check for handler for the event, if none, ignore.
+				if (typeof controller.eventsMap[event] === 'undefined') return;
+
+				// Now let's loop the methods.
+				controller.eventsMap[event].forEach(async (controllerMethod: string) => {
+
+					// Create the context.
+					const context = new GenericContext(this.client, event, args, this.queue, this.session);
+
+					// Check for authentication checks.
+					const authChecks = DecoratorHelper.getMetadata('t:auth:checks', [], controller.instance, controllerMethod);
+					if (authChecks.length > 0) {
+						this.logger.warn('AUTH', 'Authentication checks are not supported for generic events due to their un-typed nature.');
+					}
+
+					// Now call the method with the context.
+					await controller.instance[controllerMethod](context);
+				});
+			});
+
+		} catch(err) {
+
+			// Log any error.
+			this.logger.error('PLUGIN:DISCORD', `Failed to handle generic event, error: ${(err as Error).message}`, (err as Error));
+		}
+	}
+
+	/**
+	 * Accepts the interaction and dispatches it to the specific handler.
+	 *
+	 * @param interaction The interaction.
 	 * @returns Promise<void>
 	 * @private
 	 * @async
@@ -451,6 +560,21 @@ export class DiscordService extends AbstractService implements IService {
 
 		// Now call the method with the context.
 		await controller.instance[controllerMethod](context);
+	}
+
+	/**
+	 * Will get and return a controller based on if it handles the
+	 * given generic event.
+	 *
+	 * @param commandName The name of the command.
+	 * @returns AbstractController | false
+	 * @private
+	 */
+	private getEventControllers(event: keyof ClientEvents): any[] {
+		return this.controllers.filter(controller => {
+			if (!controller.isGeneric) return false;
+			return controller.events.includes(event);
+		});
 	}
 
 	/**

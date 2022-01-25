@@ -15,7 +15,7 @@ import { Wait } from '../helper/misc';
  * Context class for the Discord plugin.
  *
  * @class Context
- * @plugin Discord
+ * @plugin Turbo-Discord
  * @injects turbo.translator
  */
 export class Context {
