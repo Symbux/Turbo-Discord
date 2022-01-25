@@ -5,12 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.1.9](https://github.com/Symbux/Turbo-Discord/compare/v0.1.8...v0.1.9) - 2022-01-19
+## [v0.2.0](https://github.com/Symbux/Turbo-Discord/compare/v0.1.8...v0.2.0) - 2022-01-25
 
 ### Commits
 
+- Added support for the new generic event handler for non slash command events, this uses a generic/dynamic and untyped system, I will expand it at a later date. [`c9d6b45`](https://github.com/Symbux/Turbo-Discord/commit/c9d6b45ca92cf60f721dbebedd31dd0e356dafe1)
+- Updated all external packages to the latest version. [`d3c4950`](https://github.com/Symbux/Turbo-Discord/commit/d3c49505a5661812d0c29b1180b4ad47142081be)
 - Switched from using 'TextBasedChannels' to TextChannel as discord was throwing an error that it doesn't exist... I dunno... [`5c68489`](https://github.com/Symbux/Turbo-Discord/commit/5c68489bc31feb94a24bd236533e8816b1cbbbf3)
+- Updated changelog. [`4770a48`](https://github.com/Symbux/Turbo-Discord/commit/4770a489bf20bc05e253e2872270527852628b98)
 - Updated changelog. [`bdfc115`](https://github.com/Symbux/Turbo-Discord/commit/bdfc1151d9a5244d3977ca74c42ab2515a19eb21)
+- Updated package version. [`0551047`](https://github.com/Symbux/Turbo-Discord/commit/05510475f7c97b325dc588cd7d33357d4f4d12a5)
 - Bumped package version. [`1757239`](https://github.com/Symbux/Turbo-Discord/commit/1757239325f6c9e79188aa9b1db0efb07927f88b)
 
 ## [v0.1.8](https://github.com/Symbux/Turbo-Discord/compare/v0.1.7...v0.1.8) - 2022-01-17
