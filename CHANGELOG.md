@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.11](https://github.com/Symbux/Turbo-Discord/compare/v0.2.10...v0.2.11) - 2022-01-26
+
+### Commits
+
+- Updated injector package. [`9c458f2`](https://github.com/Symbux/Turbo-Discord/commit/9c458f2f5d2149d0cb203ca27ea5ec70aba44903)
+- Updated changelog. [`3294c3d`](https://github.com/Symbux/Turbo-Discord/commit/3294c3d55e4eb6d6115fe9ad5f2bd968f7eaeb15)
+
 ## [v0.2.10](https://github.com/Symbux/Turbo-Discord/compare/v0.2.9...v0.2.10) - 2022-01-26
 
 ### Commits
