@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.3](https://github.com/Symbux/Turbo-Discord/compare/v0.3.1...v0.3.3) - 2022-01-26
+
+### Commits
+
+- Updated yarn lock file. [`080c017`](https://github.com/Symbux/Turbo-Discord/commit/080c0179e023c069bd3ea814896f3528c1bc4f42)
+- Updated changelog. [`a2906ed`](https://github.com/Symbux/Turbo-Discord/commit/a2906ed4f15fc25c37665b88feb8d81be13e299f)
+
 ## [v0.3.1](https://github.com/Symbux/Turbo-Discord/compare/v0.3.0...v0.3.1) - 2022-01-26
 
 ### Commits
