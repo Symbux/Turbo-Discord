@@ -104,7 +104,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@prisma/client@^3.6.0":
+"@prisma/client@^3.8.1":
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-3.8.1.tgz#c11eda8e84760867552ffde4de7b48fb2cf1e1c0"
   integrity sha512-NxD1Xbkx1eT1mxSwo1RwZe665mqBETs0VxohuwNfFIxMqcp0g6d4TgugPxwZ4Jb4e5wCu8mQ9quMedhNWIWcZQ==
@@ -138,12 +138,12 @@
   dependencies:
     reflect-metadata "^0.1.13"
 
-"@symbux/turbo@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@symbux/turbo/-/turbo-0.3.2.tgz#116705b9b4defa016af82db7d006a77b81f8431d"
-  integrity sha512-dXLF3VHRXTJXfxFBtBDNmwnSpQuBhN1TrVNSMX7K2aZ1rF+TLFm2JtA0rmsoePTsoJ7T7KM5gU8DDFnk/Sbj2Q==
+"@symbux/turbo@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@symbux/turbo/-/turbo-0.3.3.tgz#8bdf6cd8b9573c30b0a22432f97b3d7a742daedb"
+  integrity sha512-RrkEO4aRB/G3SevzPYAlA+g2UXId30NviY13a/h2QPaOO8rCa1sTNSaM5tGUibdishKmeX8mVa/pIRe+800F+A==
   dependencies:
-    "@prisma/client" "^3.6.0"
+    "@prisma/client" "^3.8.1"
     "@symbux/injector" "^1.4.0"
     chalk "^4.1.2"
     cookie-parser "^1.4.6"
