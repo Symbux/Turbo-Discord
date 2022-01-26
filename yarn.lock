@@ -136,20 +136,20 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.3.0.tgz#344fd9bf808a84567ba563d00cc54b2f428dbab1"
   integrity sha512-wwOvh0eO3PiTEivGJWiZ+b946SlMSb4pe+y+Ur/4S87cwo09pYi+FWHHnbrM3W9W7cBYKDqQXcrFYjYUCOJUEQ==
 
-"@symbux/injector@^1.3.2":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@symbux/injector/-/injector-1.3.2.tgz#d42f0cb91d613dada001a96ff0af47411350aad6"
-  integrity sha512-bv6vuVUBJfVcd0sWCZBJc7QFFUDqylncjxsoJR6B/wGy/niPboS9cVVq615Q5vodDLGaEryGhqGhkp4jDj1TAw==
+"@symbux/injector@^1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@symbux/injector/-/injector-1.3.3.tgz#c91a032309f1807e6f740bb387c1aa1ca5329f4f"
+  integrity sha512-IOMsHA+xgGels7lB1KDJg+TRAcW2TcQvPywmA8H8AjyG2cXbhWSvgzljoRcfGDpS1S2wcfY717KqLFO4m158Bw==
   dependencies:
     reflect-metadata "^0.1.13"
 
-"@symbux/turbo@^0.2.19":
-  version "0.2.19"
-  resolved "https://registry.yarnpkg.com/@symbux/turbo/-/turbo-0.2.19.tgz#fdb4e33342d94bf0e047460c52c2412e158b03b9"
-  integrity sha512-N3jyoqsDLTJ9/sJOthnovq5wElWdVN03hCAqOQF2tAh7Y3OECRNrTRnZ/UapO51mvRzsOn2X7l0vOs/QaT9HHw==
+"@symbux/turbo@^0.2.20":
+  version "0.2.20"
+  resolved "https://registry.yarnpkg.com/@symbux/turbo/-/turbo-0.2.20.tgz#cdb7d24855fbc31ee5d042b738b3bb105d3aefa5"
+  integrity sha512-t8kPGW2bnSudSO8dZtnEBk1gU2yqjrLX8RdqvrLrBiLKP1ATmhSuzS8a4Ph2qUjG0Xpn6XRSSh5m0zus0buHLg==
   dependencies:
     "@prisma/client" "^3.8.1"
-    "@symbux/injector" "^1.3.2"
+    "@symbux/injector" "^1.3.3"
     chalk "^4.1.2"
     cookie-parser "^1.4.6"
     cron "^1.8.2"
