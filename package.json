@@ -1,6 +1,6 @@
 {
   "name": "@symbux/turbo-discord",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A discord plugin for the Turbo engine.",
   "main": "lib/index.js",
   "repository": "git@github.com:Symbux/Turbo-Discord.git",
@@ -37,7 +37,7 @@
   },
   "peerDependencies": {
     "@symbux/injector": "^1.4.0",
-    "@symbux/turbo": "^0.3.0"
+    "@symbux/turbo": "^0.3.2"
   },
   "devDependencies": {
     "@types/node": "^17.0.10",
