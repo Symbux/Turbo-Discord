@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.0](https://github.com/Symbux/Turbo-Discord/compare/v0.2.14...v0.3.0) - 2022-01-26
+
+### Commits
+
+- reverted all code. [`e56d794`](https://github.com/Symbux/Turbo-Discord/commit/e56d794fa6dcaf79dd913a7a8c105d2828771c26)
+
+## [v0.2.14](https://github.com/Symbux/Turbo-Discord/compare/v0.2.13...v0.2.14) - 2022-01-26
+
+### Commits
+
+- Added DI and Turbo package updates. [`1914209`](https://github.com/Symbux/Turbo-Discord/commit/191420979970891b17ef3411c02ba392e717cf9c)
+- Updated changelog. [`d68ab92`](https://github.com/Symbux/Turbo-Discord/commit/d68ab92ff3d15b06fe33c375af02a1d77c25e791)
+
+## [v0.2.13](https://github.com/Symbux/Turbo-Discord/compare/v0.2.12...v0.2.13) - 2022-01-26
+
+### Commits
+
+- Added potential fix. [`442e87b`](https://github.com/Symbux/Turbo-Discord/commit/442e87bc3b138433b6642c48efe31273ae5dc69b)
+- Updated changelog. [`470f697`](https://github.com/Symbux/Turbo-Discord/commit/470f6973a4530101eb4cab8814a6dbd17e504b0f)
+
+## [v0.2.12](https://github.com/Symbux/Turbo-Discord/compare/v0.2.11...v0.2.12) - 2022-01-26
+
+### Commits
+
+- Updated broke package. [`10cd431`](https://github.com/Symbux/Turbo-Discord/commit/10cd431e8d00351843d57466b7ba97c51b5da143)
+- Updated changelog. [`6b8c983`](https://github.com/Symbux/Turbo-Discord/commit/6b8c983d85da0a7d13250e4fed4469ce8845ddc4)
+
+## [v0.2.11](https://github.com/Symbux/Turbo-Discord/compare/v0.2.10...v0.2.11) - 2022-01-26
+
+### Commits
+
+- Updated injector package. [`9c458f2`](https://github.com/Symbux/Turbo-Discord/commit/9c458f2f5d2149d0cb203ca27ea5ec70aba44903)
+- Updated changelog. [`3294c3d`](https://github.com/Symbux/Turbo-Discord/commit/3294c3d55e4eb6d6115fe9ad5f2bd968f7eaeb15)
+
+## [v0.2.10](https://github.com/Symbux/Turbo-Discord/compare/v0.2.9...v0.2.10) - 2022-01-26
+
+### Commits
+
+- Updated deps. [`b6616dd`](https://github.com/Symbux/Turbo-Discord/commit/b6616dddfe7ce9863b8a4a99a61ad67ab29edb53)
+- Updated changelog. [`100ec60`](https://github.com/Symbux/Turbo-Discord/commit/100ec607ed857ca99742e51cb911df80b96937bb)
+
+## [v0.2.9](https://github.com/Symbux/Turbo-Discord/compare/v0.2.0...v0.2.9) - 2022-01-26
+
+### Commits
+
+- Updated dependencies, reverted all broken patches. [`f1ffb31`](https://github.com/Symbux/Turbo-Discord/commit/f1ffb3126afe34a28d1525d0eb501c50aa1f1435)
+- Updated changelog. [`da8880e`](https://github.com/Symbux/Turbo-Discord/commit/da8880e91f03736376c9a29e5a4749dbe39364b1)
+
 ## [v0.2.0](https://github.com/Symbux/Turbo-Discord/compare/v0.1.8...v0.2.0) - 2022-01-25
 
 ### Commits
