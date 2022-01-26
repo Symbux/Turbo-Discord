@@ -104,7 +104,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@prisma/client@^3.6.0":
+"@prisma/client@^3.8.1":
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-3.8.1.tgz#c11eda8e84760867552ffde4de7b48fb2cf1e1c0"
   integrity sha512-NxD1Xbkx1eT1mxSwo1RwZe665mqBETs0VxohuwNfFIxMqcp0g6d4TgugPxwZ4Jb4e5wCu8mQ9quMedhNWIWcZQ==
@@ -136,27 +136,27 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.3.0.tgz#344fd9bf808a84567ba563d00cc54b2f428dbab1"
   integrity sha512-wwOvh0eO3PiTEivGJWiZ+b946SlMSb4pe+y+Ur/4S87cwo09pYi+FWHHnbrM3W9W7cBYKDqQXcrFYjYUCOJUEQ==
 
-"@symbux/injector@^1.2.0", "@symbux/injector@^1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@symbux/injector/-/injector-1.3.1.tgz#c83b9344a2982412170127fd2a30f72597776887"
-  integrity sha512-SL9gVAU3i2MH2XOR/FhUAfEmmgxLB2ofDJEyIbsRMCTJgop7YCArx38cew0fr1FVjR+1CKBQ3FOhRHpn3qd5AA==
+"@symbux/injector@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@symbux/injector/-/injector-1.3.2.tgz#d42f0cb91d613dada001a96ff0af47411350aad6"
+  integrity sha512-bv6vuVUBJfVcd0sWCZBJc7QFFUDqylncjxsoJR6B/wGy/niPboS9cVVq615Q5vodDLGaEryGhqGhkp4jDj1TAw==
   dependencies:
     reflect-metadata "^0.1.13"
 
-"@symbux/turbo@^0.2.18":
-  version "0.2.18"
-  resolved "https://registry.yarnpkg.com/@symbux/turbo/-/turbo-0.2.18.tgz#c87e4a9f59959721a5da58a5fb1892bbbd37182f"
-  integrity sha512-146BVz11qbuJIrWR3ahpzs15uy5kjM1mPpfbmx7AcSUcjlJRFydPSr2hz21jdY6RkvdYoViFowFQ/xlnT1+oKg==
+"@symbux/turbo@^0.2.19":
+  version "0.2.19"
+  resolved "https://registry.yarnpkg.com/@symbux/turbo/-/turbo-0.2.19.tgz#fdb4e33342d94bf0e047460c52c2412e158b03b9"
+  integrity sha512-N3jyoqsDLTJ9/sJOthnovq5wElWdVN03hCAqOQF2tAh7Y3OECRNrTRnZ/UapO51mvRzsOn2X7l0vOs/QaT9HHw==
   dependencies:
-    "@prisma/client" "^3.6.0"
-    "@symbux/injector" "^1.2.0"
+    "@prisma/client" "^3.8.1"
+    "@symbux/injector" "^1.3.2"
     chalk "^4.1.2"
     cookie-parser "^1.4.6"
     cron "^1.8.2"
-    express "^4.17.1"
+    express "^4.17.2"
     express-ws "^5.0.2"
     glob "^7.2.0"
-    helmet "^4.6.0"
+    helmet "^5.0.2"
     reflect-metadata "^0.1.13"
     threads "^1.7.0"
 
@@ -742,7 +742,7 @@ express-ws@^5.0.2:
   dependencies:
     ws "^7.4.6"
 
-express@^4.17.1:
+express@^4.17.2:
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.17.2.tgz#c18369f265297319beed4e5558753cc8c1364cb3"
   integrity sha512-oxlxJxcQlYwqPWKVJJtvQiwHgosH/LrLSPA+H4UxpyvSS6jC5aH+5MoHFM+KABgTOt0APue4w66Ha8jCUo9QGg==
@@ -939,10 +939,10 @@ has-flag@^4.0.0:
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
   integrity sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
 
-helmet@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/helmet/-/helmet-4.6.0.tgz#579971196ba93c5978eb019e4e8ec0e50076b4df"
-  integrity sha512-HVqALKZlR95ROkrnesdhbbZJFi/rIVSoNq6f3jA/9u6MIbTsPh3xZwihjeI5+DO/2sOV6HMHooXcEOuwskHpTg==
+helmet@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-5.0.2.tgz#3264ec6bab96c82deaf65e3403c369424cb2366c"
+  integrity sha512-QWlwUZZ8BtlvwYVTSDTBChGf8EOcQ2LkGMnQJxSzD1mUu8CCjXJZq/BXP8eWw4kikRnzlhtYo3lCk0ucmYA3Vg==
 
 http-errors@1.8.1:
   version "1.8.1"
