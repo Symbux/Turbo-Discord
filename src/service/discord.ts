@@ -256,8 +256,9 @@ export class DiscordService extends AbstractService implements IService {
 	// Unregister the commands with all connected guilds.
 	private async unregisterCommands(): Promise<void> {
 		await Promise.all(this.client.guilds.cache.map(async guild => {
-			await Promise.all(guild.commands.cache.map(async command => {
-				command.delete();
+			const guildCommands = await guild.commands.fetch();
+			await Promise.all(guildCommands.map(async command => {
+				await command.delete();
 			}));
 		}));
 	}
