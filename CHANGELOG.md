@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.9](https://github.com/Symbux/Turbo-Discord/compare/v0.3.8...v0.3.9) - 2022-02-09
+
+### Commits
+
+- Added support for calling a class by it's perm name, rather than a unique ID that changes every restart. [`accdbe9`](https://github.com/Symbux/Turbo-Discord/commit/accdbe9ac576f0f3cf067926a385b3684d7a3218)
+- Updated changelog. [`120bd64`](https://github.com/Symbux/Turbo-Discord/commit/120bd64d84c2794bc2b5a59753a04c5fe1138768)
+- Bumped patch version. [`22937c4`](https://github.com/Symbux/Turbo-Discord/commit/22937c43db3dadd05bb5daef25024f517b85c6a5)
+
 ## [v0.3.8](https://github.com/Symbux/Turbo-Discord/compare/v0.3.7...v0.3.8) - 2022-02-02
 
 ### Commits
