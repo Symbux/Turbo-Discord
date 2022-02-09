@@ -8,7 +8,7 @@ import { GenerateKey } from '../helper/misc';
  * @plugin Turbo-Discord
  */
 export class AbstractCommand {
-	private commandKey = GenerateKey(8);
+	private randomKey = GenerateKey(8);
 
 	/**
 	 * Will get the command's unique key.
@@ -16,6 +16,6 @@ export class AbstractCommand {
 	 * @returns string
 	 */
 	public getUniqueKey(): string {
-		return this.commandKey;
+		return this.randomKey;
 	}
 }

@@ -1,6 +1,6 @@
 import { Command, AbstractCommand, On, Context } from '../../src/index';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { CommandInteraction, MessageActionRow, MessageButton, MessageEmbed } from 'discord.js';
 
 @Command(
 	new SlashCommandBuilder()
@@ -44,6 +44,29 @@ export default class FactionAdminCommand extends AbstractCommand {
 					.setDescription('DELETE')
 					.setTimestamp(),
 			],
+			components: [
+				new MessageActionRow()
+					.addComponents(
+						new MessageButton()
+							.setCustomId('FactionAdminCommand:testing-hello')
+							.setLabel('Hello')
+							.setStyle('PRIMARY'),
+						new MessageButton()
+							.setCustomId(`${this.getUniqueKey()}:testing-dynamic`)
+							.setLabel('Dynamic')
+							.setStyle('SECONDARY'),
+					),
+			],
 		});
+	}
+
+	@On.Button('testing-hello')
+	public async onHello(): Promise<void> {
+		console.log('onHello was triggered :D');
+	}
+
+	@On.Button('testing-dynamic')
+	public async onDynamic(): Promise<void> {
+		console.log('onDynamic was triggered :D');
 	}
 }

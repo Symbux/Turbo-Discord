@@ -114,6 +114,7 @@ export class DiscordService extends AbstractService implements IService {
 			this.controllers = controllers.filter(controller => {
 				controller.events = false;
 				controller.isGeneric = false;
+				controller.name = controller.instance.constructor.name;
 				controller.methods = DecoratorHelper.getMetadata('t:methods', [], controller.instance);
 				const requiredPlugin = DecoratorHelper.getMetadata('t:plugin', 'none', controller.module);
 				return requiredPlugin === 'discord';
@@ -484,8 +485,8 @@ export class DiscordService extends AbstractService implements IService {
 			return;
 		}
 
-		// Now we need to check for controllers matching the first part of the custom ID.
-		const controller = this.getControllerByCustomId(customId);
+		// Now we need to check for controllers checking the perm name and then matching the first part of the custom ID.
+		const controller = this.getControllerByName(customId) || this.getControllerByCustomId(customId);
 		if (!controller) throw new Error('Could not find valid controller to serve the command.');
 
 		// Now we need to find the default command.
@@ -602,6 +603,20 @@ export class DiscordService extends AbstractService implements IService {
 	 */
 	private getControllerByCustomId(customId: string): any {
 		const controllers = this.controllers.filter(controller => controller.unique === customId);
+		if (controllers.length === 0) return false;
+		return controllers[0];
+	}
+
+	/**
+	 * Will get and return a controller by it's name, or false
+	 * if not found.
+	 *
+	 * @param customId The custom ID of the controller.
+	 * @returns AbstractController | false
+	 * @private
+	 */
+	private getControllerByName(customId: string): any {
+		const controllers = this.controllers.filter(controller => controller.name === customId);
 		if (controllers.length === 0) return false;
 		return controllers[0];
 	}
