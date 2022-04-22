@@ -103,3 +103,5 @@ engine.start().catch((err) => {
 * Helper functions for creating intuitive user experiences.
 * Embed builder and quick access functionality.
 * Built in OAuth functionality for SSO with Discord.
+* Support for command option autocomplete using built in class router.
+* Support for context menu's in commands and generic context menu classes.
