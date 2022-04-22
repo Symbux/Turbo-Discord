@@ -35,7 +35,7 @@
   },
   "peerDependencies": {
     "@symbux/injector": "^1.4.0",
-    "@symbux/turbo": "^0.6.2"
+    "@symbux/turbo": "^0.6.3"
   },
   "devDependencies": {
     "@types/node": "^17.0.25",
