@@ -6,13 +6,15 @@ import { IMiddleware, IOptions, IActivityItem, IEventMiddleware, IQueueItem, IQu
 import { IConfirmOptions } from './types/context';
 import { AbstractCommand } from './abstract/command';
 import { AbstractEvent } from './abstract/event';
-import { Command } from './decorator/command';
+import { Command, ContextMenu } from './decorator/command';
 import { Event } from './decorator/event';
 import { Queue } from './module/queue';
 import { Session } from './module/session';
 import { OAuth } from './module/oauth';
 import { Intents } from 'discord.js';
+import { ContextMenuType } from './enum/builder';
 import * as On from './decorator/on-event';
+import * as Add from './decorator/add-context';
 import * as Misc from './helper/misc';
 
 /**
@@ -23,11 +25,13 @@ export {
 	AbstractCommand,
 	AbstractEvent,
 	Command,
+	ContextMenu,
 	Event,
 	OAuth,
 	Queue,
 	Session,
 	On,
+	Add,
 	DiscordService,
 	IOptions, IActivityItem, IMiddleware, IEventMiddleware, IQueueItem, IQueueItemExtended,
 	IConfirmOptions,
@@ -35,6 +39,7 @@ export {
 	GenericContext,
 	Misc,
 	Intents,
+	ContextMenuType,
 };
 
 /**

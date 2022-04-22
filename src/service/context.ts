@@ -142,7 +142,7 @@ export class Context {
 	 * Will defer the reply, so you have more time to respond.
 	 */
 	public async defer(isEphemeral = true): Promise<void> {
-		if (this.interaction.isCommand() || this.interaction.isButton() || this.interaction.isSelectMenu()) {
+		if (this.interaction.isCommand() || this.interaction.isButton() || this.interaction.isSelectMenu() || this.interaction.isContextMenu() || this.interaction.isMessageComponent()) {
 			await this.interaction.deferReply({
 				ephemeral: isEphemeral,
 			});
@@ -330,5 +330,33 @@ export class Context {
 			.setCustomId(customId)
 			.setLabel(label)
 			.setStyle(style);
+	}
+
+	/**
+	 * Will get the context message for a context menu interaction.
+	 *
+	 * @returns Message
+	 */
+	public getContextMessage(): Message | null {
+		if (!this.interaction.isContextMenu()) return null;
+		if (!this.interaction.isMessageContextMenu()) return null;
+		return this.interaction.targetMessage as Message;
+	}
+
+	/**
+	 * Will get the context author related to the context menu interaction.
+	 *
+	 * @returns User | null
+	 */
+	public getContextUser(): User | null {
+		if (!this.interaction.isContextMenu()) return null;
+		if (this.interaction.isMessageContextMenu()) {
+			const targetMessage = this.getContextMessage();
+			if (!targetMessage) return null;
+			return targetMessage.author;
+		} else {
+			if (!this.interaction.isUserContextMenu()) return null;
+			return this.interaction.targetUser as User;
+		}
 	}
 }

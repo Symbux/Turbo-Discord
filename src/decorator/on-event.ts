@@ -10,9 +10,8 @@ import { ClientEvents } from 'discord.js';
 export function Command(): MethodDecorator {
 	return (target: any, propertyKey: symbol | string): void => {
 		DecoratorHelper.addMethod(target, propertyKey, {
-			'unique': false,
-			'subcommand': false,
-			'auth': {},
+			unique: false,
+			auth: {},
 		});
 	};
 }
@@ -27,9 +26,9 @@ export function Command(): MethodDecorator {
 export function SubCommand(unique: string): MethodDecorator {
 	return (target: any, propertyKey: symbol | string): void => {
 		DecoratorHelper.addMethod(target, propertyKey, {
-			'unique': unique,
-			'subcommand': true,
-			'auth': {},
+			unique: unique,
+			subcommand: true,
+			auth: {},
 		});
 	};
 }
@@ -44,9 +43,8 @@ export function SubCommand(unique: string): MethodDecorator {
 export function Button(unique: string): MethodDecorator {
 	return (target: any, propertyKey: symbol | string): void => {
 		DecoratorHelper.addMethod(target, propertyKey, {
-			'unique': unique,
-			'subcommand': false,
-			'auth': {},
+			unique: unique,
+			auth: {},
 		});
 	};
 }
@@ -61,9 +59,8 @@ export function Button(unique: string): MethodDecorator {
 export function SelectMenu(unique: string): MethodDecorator {
 	return (target: any, propertyKey: symbol | string): void => {
 		DecoratorHelper.addMethod(target, propertyKey, {
-			'unique': unique,
-			'subcommand': false,
-			'auth': {},
+			unique: unique,
+			auth: {},
 		});
 	};
 }
@@ -73,15 +70,36 @@ export function SelectMenu(unique: string): MethodDecorator {
  * event, if none given it will accept all events defined in the
  * controllers event decorator.
  *
- * @param unique Unique event to handle.
+ * @param event Event to listen to.
  * @returns MethodDecorator
  * @plugin Turbo-Discord
  */
 export function Event(event: keyof ClientEvents): MethodDecorator {
 	return (target: any, propertyKey: symbol | string): void => {
 		DecoratorHelper.addMethod(target, propertyKey, {
-			'unique': event,
-			'auth': {},
+			unique: event,
+			event: true,
+			auth: {},
+		});
+	};
+}
+
+/**
+ * Defines a method as a handler for autocomplete functionality,
+ * you must provide an open name for the option to handle for,
+ * leaving the optionName false will handle all auto-complete
+ * methods for all options in the command.
+ *
+ * @param optionName The name of the option to complete for.
+ * @returns MethodDecorator
+ * @plugin Turbo-Discord
+ */
+export function Autocomplete(optionName = '*', subcommand = '*'): MethodDecorator {
+	return (target: any, propertyKey: symbol | string): void => {
+		DecoratorHelper.addMethod(target, propertyKey, {
+			unique: `${optionName}:${subcommand}`,
+			autocomplete: true,
+			auth: {},
 		});
 	};
 }

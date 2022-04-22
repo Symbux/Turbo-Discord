@@ -17,3 +17,19 @@ export function Command(command: Omit<SlashCommandBuilder, any>): ClassDecorator
 		if (!Reflect.hasMetadata('t:methods', target)) Reflect.defineMetadata('t:methods', [], target);
 	};
 }
+
+/**
+ * Defines a class (controller) as a Discord generic context menu
+ * command handler.
+ *
+ * @returns ClassDecorator
+ * @plugin Turbo-Discord
+ */
+export function ContextMenu(): ClassDecorator {
+	return (target: any): void => {
+		DecoratorHelper.setClassBase(target, 'controller');
+		DecoratorHelper.setMetadata('t:plugin', 'discord', target);
+		DecoratorHelper.setMetadata('t:discord:type', 'context', target);
+		if (!Reflect.hasMetadata('t:methods', target)) Reflect.defineMetadata('t:methods', [], target);
+	};
+}

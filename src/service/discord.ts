@@ -1,8 +1,8 @@
 import { AbstractService, Service, IService, Registry, DecoratorHelper } from '@symbux/turbo';
-import { Client, Interaction, CacheType, CommandInteraction, SelectMenuInteraction, ButtonInteraction, ClientEvents } from 'discord.js';
+import { Client, Interaction, CacheType, CommandInteraction, SelectMenuInteraction, ButtonInteraction, ClientEvents, AutocompleteInteraction, ContextMenuInteraction } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { ContextMenuCommandBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { Injector } from '@symbux/injector';
 import { IActivityItem, IOptions } from '../types/base';
 import { Wait } from '../helper/misc';
@@ -24,6 +24,7 @@ import { Session } from '../module/session';
 export class DiscordService extends AbstractService implements IService {
 	private client!: Client;
 	private controllers: Array<any> = [];
+	private contextMenus: Record<string, { method: string, controller: string }> = {};
 	private queue: Queue;
 	private session: Session;
 	private currentActivityIndex = 0;
@@ -115,6 +116,7 @@ export class DiscordService extends AbstractService implements IService {
 				controller.events = false;
 				controller.isGeneric = false;
 				controller.name = controller.instance.constructor.name;
+				controller.type = DecoratorHelper.getMetadata('t:discord:type', 'command', controller.module);
 				controller.methods = DecoratorHelper.getMetadata('t:methods', [], controller.instance);
 				const requiredPlugin = DecoratorHelper.getMetadata('t:plugin', 'none', controller.module);
 				return requiredPlugin === 'discord';
@@ -207,6 +209,34 @@ export class DiscordService extends AbstractService implements IService {
 		this.logger.verbose('PLUGIN:DISCORD', 'Retrieving the commands.');
 		const slashCommands: Array<any> = [];
 
+		// Loop the controllers and get the context menus.
+		this.controllers.forEach(controller => {
+
+			// Loop the methods and get the context menus.
+			Object.keys(controller.methods).forEach(methodName => {
+
+				// Define the method.
+				const method = controller.methods[methodName];
+
+				// Check if method is a context-menu.
+				if (method.basetype !== 'Context') return;
+
+				// Now let's create the command and add it to the list.
+				slashCommands.push(
+					new ContextMenuCommandBuilder()
+						.setName(method.name)
+						.setType(method.subtype === 'Message' ? 3 : 2)
+						.toJSON(),
+				);
+
+				// Assign the method to the global context menu map.
+				this.contextMenus[method.name] = {
+					method: methodName,
+					controller: controller.name,
+				};
+			});
+		});
+
 		// Loop the controllers and get the commands.
 		this.controllers.forEach(controller => {
 
@@ -224,15 +254,23 @@ export class DiscordService extends AbstractService implements IService {
 			// Define the unique names.
 			controller.uniqueNames = {};
 			controller.uniqueSubNames = {};
+
+			// Loop the controller methods.
 			for (const propertyKey in controller.methods) {
+
+				// Define pre-variables.
 				const isSubcommand = controller.methods[propertyKey].subcommand;
 				const uniqueId = controller.methods[propertyKey].unique;
+
+				// If not subcommand, use alternative lookup.
 				if (!isSubcommand) {
 					if (uniqueId !== false) {
 						controller.uniqueNames[uniqueId] = propertyKey;
 					} else {
 						controller.uniqueNames._ = propertyKey;
 					}
+
+				// Else, use standard lookup.
 				} else {
 					controller.uniqueSubNames[uniqueId] = propertyKey;
 				}
@@ -302,7 +340,10 @@ export class DiscordService extends AbstractService implements IService {
 
 			// Verify the controller.
 			const controllers = this.getEventControllers(event);
-			if (controllers.length === 0) throw new Error('Could not find valid controller(s) to serve the event.');
+			if (controllers.length === 0) {
+				this.logger.warn('PLUGIN:DISCORD', `No handlers found for event: ${event}.`);
+				return;
+			}
 
 			// Now loop the controllers.
 			controllers.forEach(controller => {
@@ -367,6 +408,16 @@ export class DiscordService extends AbstractService implements IService {
 			// On select menu interaction.
 			if (interaction.isSelectMenu()) {
 				await this.onSelectMenu(interaction);
+			}
+
+			// On autocomplete interaction.
+			if (interaction.isAutocomplete()) {
+				await this.onAutocomplete(interaction);
+			}
+
+			// On reaction interaction.
+			if (interaction.isContextMenu()) {
+				await this.onContextMenu(interaction);
 			}
 
 		} catch(err) {
@@ -565,10 +616,93 @@ export class DiscordService extends AbstractService implements IService {
 	}
 
 	/**
+	 * Will process the autocomplete interactions.
+	 *
+	 * @param interaction The interaction for the autocomplete.
+	 * @returns Promise<void>
+	 * @private
+	 * @async
+	 */
+	private async onAutocomplete(interaction: AutocompleteInteraction<CacheType>): Promise<void> {
+
+		// Define the data.
+		const commandName = interaction.commandName;
+		const subCommand = interaction.options.getSubcommand(false);
+		const optionObject = interaction.options.getFocused(true);
+
+		// We need to find the controller.
+		const controller = this.getController(commandName);
+		if (!controller) throw new Error('Could not find valid controller to serve the command.');
+
+		// Find the method.
+		const method = Object.keys(controller.methods).find(key => {
+			const method = controller.methods[key];
+			if (!method.autocomplete) return false;
+			if (!method.unique) return false;
+			const [ option, subcommand ] = (method.unique as string).split(':');
+			if (subcommand === subCommand && option === optionObject.name) return true;
+			if (subcommand === subcommand && option === '*') return true;
+			if (subcommand === '*' && option === optionObject.name) return true;
+			if (subcommand === '*' && option === '*') return true;
+			return false;
+		});
+
+		// Check for no method found.
+		if (!method) throw new Error(`No valid method found to serve the autocomplete interaction with unique key: ${commandName}/${subCommand}:${optionObject.name}.`);
+
+		// Now we need to build the context.
+		const context = new Context(interaction, 'autocomplete', this.queue, this.session);
+
+		// Now call the method with the context.
+		await controller.instance[method](context);
+	}
+
+	/**
+	 * Will process the context-menu interactions.
+	 *
+	 * @param interaction The interaction for the context menu.
+	 * @returns Promise<void>
+	 * @private
+	 * @async
+	 */
+	private async onContextMenu(interaction: ContextMenuInteraction): Promise<void> {
+
+		// Firstly let's lookup the context menu.
+		const contextMenu = this.contextMenus[interaction.commandName];
+		if (!contextMenu) throw new Error('Could not find valid context menu to serve the command.');
+
+		// Verify the controller.
+		const controller = this.getControllerByName(contextMenu.controller);
+		if (!controller) throw new Error('Could not find valid controller to serve the command.');
+
+		// Now let's check to see if the method exists.
+		if (typeof controller.instance[contextMenu.method] === 'undefined') throw new Error('The method assigned to this command does not exist.');
+
+		// Let's build a context.
+		const context = new Context(interaction, 'context-menu', this.queue, this.session);
+
+		// Now we need to run authentication.
+		const authResponse = await this.auth.handle('discord', context, controller.instance, contextMenu.method);
+		if (authResponse.failed && authResponse.stop) {
+			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
+			return;
+		}
+
+		// Check for standard stop.
+		if (!authResponse.failed && authResponse.stop) {
+			this.logger.warn('PLUGIN:DISCORD', 'The command was stopped by middleware.');
+			return;
+		}
+
+		// Now call the method with the context.
+		await controller.instance[contextMenu.method](context);
+	}
+
+	/**
 	 * Will get and return a controller based on if it handles the
 	 * given generic event.
 	 *
-	 * @param commandName The name of the command.
+	 * @param event The name of the event.
 	 * @returns AbstractController | false
 	 * @private
 	 */
