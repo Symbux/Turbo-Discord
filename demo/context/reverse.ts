@@ -35,4 +35,32 @@ export default class ReverseContext extends AbstractCommand {
 		// If valid message, get content, reverse and return.
 		await interaction.editReply(user.username.split('').reverse().join(''));
 	}
+
+	@Add.MessageContext('Test Message Access')
+	public async onTestMessageAccess(context: Context): Promise<void> {
+		console.log(
+			context.getLanguages(),
+			context.getAuth(),
+			context.getRaw(),
+			context.getUser(),
+			context.getGuild(),
+			context.getGuildMember(),
+			context.getChannel(),
+			context.getClient(),
+		);
+	}
+
+	@Add.UserContext('Test User Access')
+	public async onTestUserAccess(context: Context): Promise<void> {
+		console.log(
+			context.getLanguages(),
+			context.getAuth(),
+			context.getRaw(),
+			context.getUser(),
+			context.getGuild(),
+			context.getGuildMember(),
+			context.getChannel(),
+			context.getClient(),
+		);
+	}
 }

@@ -3,16 +3,17 @@ import { DiscordService } from './service/discord';
 import { Context } from './service/context';
 import { GenericContext } from './service/generic-context';
 import { IMiddleware, IOptions, IActivityItem, IEventMiddleware, IQueueItem, IQueueItemExtended } from './types/base';
-import { IConfirmOptions } from './types/context';
+import { ActionChoiceItem, ActionSelectItem, ActionBaseOptions, ActionConfirmOptions, ActionSelectOptions, ActionChoiceOptions } from './types/context';
 import { AbstractCommand } from './abstract/command';
 import { AbstractEvent } from './abstract/event';
+import { ContextActions } from './context/action';
 import { Command, ContextMenu } from './decorator/command';
+import { ContextMenuType } from './enum/builder';
 import { Event } from './decorator/event';
 import { Queue } from './module/queue';
 import { Session } from './module/session';
 import { OAuth } from './module/oauth';
 import { Intents } from 'discord.js';
-import { ContextMenuType } from './enum/builder';
 import * as On from './decorator/on-event';
 import * as Add from './decorator/add-context';
 import * as Misc from './helper/misc';
@@ -24,6 +25,7 @@ import * as Misc from './helper/misc';
 export {
 	AbstractCommand,
 	AbstractEvent,
+	ContextActions,
 	Command,
 	ContextMenu,
 	Event,
@@ -34,7 +36,7 @@ export {
 	Add,
 	DiscordService,
 	IOptions, IActivityItem, IMiddleware, IEventMiddleware, IQueueItem, IQueueItemExtended,
-	IConfirmOptions,
+	ActionChoiceItem, ActionSelectItem, ActionBaseOptions, ActionConfirmOptions, ActionSelectOptions, ActionChoiceOptions,
 	Context,
 	GenericContext,
 	Misc,

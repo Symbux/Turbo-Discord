@@ -160,14 +160,14 @@
   dependencies:
     reflect-metadata "^0.1.13"
 
-"@symbux/turbo@^0.6.3":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@symbux/turbo/-/turbo-0.6.3.tgz#8f3e5b86ad93954f2c63558058fcca23431fd94a"
-  integrity sha512-oMxv8zuXiIEGlkM/CCSCvMxYDSNuZYHgugHfa7S9b7FFe4VUw2y1sFvlf5VfzA7bHtKjrFmd163g9nB1U/mPDg==
+"@symbux/turbo@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@symbux/turbo/-/turbo-0.6.4.tgz#c751137a640b057e031afe11c1c1b6273fdc0c8b"
+  integrity sha512-aMBh2jDT3cKznTCR0DuQ/GjStacyZsHxsM5XD5L7MeHdG51oEBff71OAMltpSDfh9BnXFm1GN2I/vcKNO3mflQ==
   dependencies:
     "@prisma/client" "^3.12.0"
     "@symbux/injector" "^1.4.0"
-    chalk "^5.0.1"
+    chalk "^4.1.2"
     cookie-parser "^1.4.6"
     cron "^1.8.2"
     express "^4.17.3"
@@ -438,18 +438,13 @@ callsites@^3.0.0, callsites@^3.1.0:
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
-chalk@^4.0.0:
+chalk@^4.0.0, chalk@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
   dependencies:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
-
-chalk@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/chalk/-/chalk-5.0.1.tgz#ca57d71e82bb534a296df63bbacc4a1c22b2a4b6"
-  integrity sha512-Fo07WOYGqMfCWHOzSXOt2CxDbC6skS/jO9ynEcmpANMoPrD+W1r1K6Vx7iNm+AQmETU1Xr2t+n8nzkV9t6xh3w==
 
 color-convert@^2.0.1:
   version "2.0.1"

@@ -83,7 +83,7 @@ export default class TodoCommand extends AbstractCommand {
 		const taskName = name || interaction.options.getString('task', true);
 
 		// Confirm intent.
-		const shouldContinue = await context.confirm(`Add task "${taskName}"?`);
+		const shouldContinue = await context.action.confirm(`Add task "${taskName}"?`);
 		if (!shouldContinue) {
 			await interaction.editReply({
 				content: 'Cancelled.',
@@ -120,7 +120,7 @@ export default class TodoCommand extends AbstractCommand {
 		}
 
 		// Confirm intent.
-		const shouldContinue = await context.confirm(`Remove task "${task.name}"?`);
+		const shouldContinue = await context.action.confirm(`Remove task "${task.name}"?`);
 		if (!shouldContinue) {
 			await interaction.editReply({
 				content: 'Cancelled task removal.',
@@ -159,7 +159,7 @@ export default class TodoCommand extends AbstractCommand {
 		}
 
 		// Confirm intent.
-		const shouldContinue = await context.confirm(`Complete task "${task.name}"?`);
+		const shouldContinue = await context.action.confirm(`Complete task "${task.name}"?`);
 		if (!shouldContinue) {
 			await interaction.editReply({
 				content: 'Cancelled task completion.',

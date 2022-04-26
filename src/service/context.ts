@@ -1,15 +1,9 @@
-import {
-	Client, CommandInteraction, Guild, GuildMember, Interaction,
-	MessageActionRow, MessageButton, MessageEmbed, PermissionResolvable,
-	TextChannel, User, Message, MessageButtonStyleResolvable,
-	MessageActionRowComponentResolvable,
-} from 'discord.js';
+import { Client, Guild, GuildMember, Interaction, PermissionResolvable, TextChannel, User, Message, MessagePayload, WebhookEditMessageOptions, CommandInteraction } from 'discord.js';
 import { Translator } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
 import { Session } from '../module/session';
 import { Queue } from '../module/queue';
-import { IConfirmOptions } from '../types/context';
-import { Wait } from '../helper/misc';
+import { ContextActions } from '../context/action';
 
 /**
  * Context class for the Discord plugin.
@@ -22,6 +16,7 @@ export class Context {
 	@Inject('turbo.translator') private translator!: Translator;
 	private auth: Record<string, any> = {};
 	private languages: string[];
+	public action: ContextActions;
 
 	/**
 	 * Creates instance of context.
@@ -36,6 +31,7 @@ export class Context {
 		public session: Session,
 	) {
 		this.languages = ['en-GB', 'en-US'];
+		this.action = new ContextActions(this);
 	}
 
 	/**
@@ -222,114 +218,26 @@ export class Context {
 	}
 
 	/**
-	 * Will create a new confirmation prompt for the user, and then await
-	 * the response from the button interaction.
+	 * Will respond to an interaction by either replying or editing
+	 * the reply if a reply has already been sent.
 	 *
-	 * @param message The message you're asing the user to confirm.
-	 * @param options Options to pass to the confirm method.
-	 * @returns Promise<boolean>
+	 * @param response Interaction response.
 	 */
-	public async confirm(question: string, options?: IConfirmOptions): Promise<boolean | null> {
-
-		// Create a new embed.
-		const embed = new MessageEmbed()
-			.setTitle('Please confirm...')
-			.setDescription(question)
-			.setColor('#37ff00');
-
-		// Create the buttons.
-		const actionRow = this.createActionRow(
-			this.createButton(options?.labels?.accept || 'Yes', 'SUCCESS', 'internal:confirm'),
-			this.createButton(options?.labels?.reject || 'No', 'DANGER', 'internal:reject'),
-		);
-
-		// Verify the reply has been deferred.
+	public async respond(response: string | MessagePayload | WebhookEditMessageOptions): Promise<void> {
 		const interaction = this.getInteraction<CommandInteraction>();
-		if (!interaction.deferred) throw new Error('To use the confirm functionality, please defer the reply first.');
-
-		// Send the confirmation.
-		const message = await interaction.editReply({
-			embeds: [embed],
-			components: [actionRow],
-		});
-
-		// Create collector and await it.
-		const collectedInteraction = await (message as Message).awaitMessageComponent({
-			filter: async i => {
-				await i.deferUpdate();
-				return i.user.id === interaction.user.id;
-			},
-			componentType: 'BUTTON',
-			time: options?.timeout || 5 * 60 * 1000,
-		}).catch(() => console.log('No response received.'));
-
-		// If no response, return null (timeout reached).
-		if (!collectedInteraction) return null;
-
-		// Should delete response?
-		if (!interaction.ephemeral && options?.shouldDelete) {
-			(message as Message).delete();
-		}
-
-		// Should respond?
-		if (options?.respond) {
-
-			// Edit the deferred update.
-			await collectedInteraction.editReply({
-				content: options.respond.text,
-				embeds: [],
-				components: [],
-			});
-
-			// If not ephemeral, delete the message, after given time.
-			if (!interaction.ephemeral) {
-				await Wait(options?.respond?.deleteAfter || 5000);
-				(message as Message).delete();
+		if (interaction.replied) {
+			if (typeof response === 'string') {
+				await interaction.editReply({
+					content: response,
+					embeds: [],
+					components: [],
+				});
+			} else {
+				await interaction.editReply(response);
 			}
+		} else {
+			await interaction.reply(response);
 		}
-
-		// Check and return result.
-		return collectedInteraction.customId === 'internal:confirm';
-	}
-
-	/**
-	 * Will present the user with a dropdown of choices from here, they can
-	 * choose the option that suits them and this will be returned. If the user
-	 * fails to reply within the default timeout of 5 minutes, null will be
-	 * returned.
-	 *
-	 * @param question The question to ask the user.
-	 * @param options The available options as strings.
-	 * @returns The selected option.
-	 */
-	public async select(question: string, options: string[]): Promise<string | null> {
-		console.log(question, options);
-		return null;
-	}
-
-	/**
-	 * Will create an empty action row.
-	 *
-	 * @returns MessageActionRow
-	 */
-	public createActionRow(...components: MessageActionRowComponentResolvable[] | MessageActionRowComponentResolvable[][]): MessageActionRow {
-		return new MessageActionRow()
-			.addComponents(...components);
-	}
-
-	/**
-	 * Creates a new button for the action row.
-	 *
-	 * @param label The button label.
-	 * @param style The button style.
-	 * @param customId A unique ID.
-	 * @returns MessageButton
-	 */
-	public createButton(label: string, style: MessageButtonStyleResolvable, customId: string): MessageButton {
-		return new MessageButton()
-			.setCustomId(customId)
-			.setLabel(label)
-			.setStyle(style);
 	}
 
 	/**
