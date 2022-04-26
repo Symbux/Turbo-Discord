@@ -111,7 +111,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@prisma/client@^3.12.0":
+"@prisma/client@^3.13.0":
   version "3.13.0"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-3.13.0.tgz#84511ebdf6ba75f77ca08495b9f73f22c4255654"
   integrity sha512-lnEA2tTyVbO5mS1ehmHJQKBDiKB8shaR6s3azwj3Azfi5XHIfnqmkolLCvUeFYnkDCNVzGXJpUgKwQt/UOOYVQ==
@@ -160,17 +160,17 @@
   dependencies:
     reflect-metadata "^0.1.13"
 
-"@symbux/turbo@^0.6.4":
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/@symbux/turbo/-/turbo-0.6.4.tgz#c751137a640b057e031afe11c1c1b6273fdc0c8b"
-  integrity sha512-aMBh2jDT3cKznTCR0DuQ/GjStacyZsHxsM5XD5L7MeHdG51oEBff71OAMltpSDfh9BnXFm1GN2I/vcKNO3mflQ==
+"@symbux/turbo@^0.6.6":
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/@symbux/turbo/-/turbo-0.6.6.tgz#792c712a4f8351930a4d88e654a4f54f9fcd53d5"
+  integrity sha512-y/GqaEeaEYpYlTBGeNufyBO/EEWDa4tqRQhqk4vFIUFMSZi0J7qR2mlo9kdcl0BHcP+RapLjJU8zmF4eSK6Onw==
   dependencies:
-    "@prisma/client" "^3.12.0"
+    "@prisma/client" "^3.13.0"
     "@symbux/injector" "^1.4.0"
     chalk "^4.1.2"
     cookie-parser "^1.4.6"
     cron "^1.8.2"
-    express "^4.17.3"
+    express "^4.18.0"
     express-fileupload "^1.3.1"
     express-ws "^5.0.2"
     glob "^8.0.1"
@@ -806,7 +806,7 @@ express-ws@^5.0.2:
   dependencies:
     ws "^7.4.6"
 
-express@^4.17.3:
+express@^4.18.0:
   version "4.18.0"
   resolved "https://registry.yarnpkg.com/express/-/express-4.18.0.tgz#7a426773325d0dd5406395220614c0db10b6e8e2"
   integrity sha512-EJEXxiTQJS3lIPrU1AE2vRuT7X7E+0KBbpm5GSoK524yl0K8X+er8zS2P14E64eqsVNoWbMCT7MpmQ+ErAhgRg==
