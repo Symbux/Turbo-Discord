@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.0](https://github.com/Symbux/Turbo-Discord/compare/v0.4.1...v0.5.0) - 2022-04-26
+
+### Commits
+
+- Various changes: [`52a47c3`](https://github.com/Symbux/Turbo-Discord/commit/52a47c3922dc97d2e6860196dd8183119b0a4a0e)
+- Updated packages. [`d3ce5d2`](https://github.com/Symbux/Turbo-Discord/commit/d3ce5d2e364a9306180bc2676b61681e8ec9b40e)
+- Updated peers [`c12934f`](https://github.com/Symbux/Turbo-Discord/commit/c12934fcae2cbf7e05e6be12d23375f15fb73669)
+- * Implemented a new context system with an actions object to call on specific actions. [`67b3fad`](https://github.com/Symbux/Turbo-Discord/commit/67b3fadb3a45b7c2fa4484959040c1c3ffb2e110)
+- Bumped package and updated all dependencies. [`f2a8c14`](https://github.com/Symbux/Turbo-Discord/commit/f2a8c1404a13e1e10942c9b9d41de679b843a8b4)
+- Updated peer deps. [`2392846`](https://github.com/Symbux/Turbo-Discord/commit/23928466528acd09ffea6bc59c44ab7583403167)
+- Added update to readme with new features. [`e8d2d65`](https://github.com/Symbux/Turbo-Discord/commit/e8d2d65c35c6f5dc40ee31e83f1705ed193c947f)
+- Fixed linting issues. [`f84a01d`](https://github.com/Symbux/Turbo-Discord/commit/f84a01d9d6b2bb17eca284924d1cf61af705eefe)
+
+## [v0.4.1](https://github.com/Symbux/Turbo-Discord/compare/v0.4.0...v0.4.1) - 2022-02-24
+
+### Commits
+
+- Updated changelog. [`ebe4f25`](https://github.com/Symbux/Turbo-Discord/commit/ebe4f2594c48651d121af7706c25fc3cb0ecb481)
+- Updated package version. [`a564987`](https://github.com/Symbux/Turbo-Discord/commit/a564987d9245a79279cbcd16750f98e69d4a3017)
+- Removed ignore. [`320d42b`](https://github.com/Symbux/Turbo-Discord/commit/320d42b7a486a1a29715b83eaa5c196a21803b8a)
+
 ## [v0.4.0](https://github.com/Symbux/Turbo-Discord/compare/v0.3.9...v0.4.0) - 2022-02-24
 
 ### Commits
