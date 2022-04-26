@@ -82,6 +82,7 @@ export class OAuth {
 			body: payload,
 			headers: {
 				Authorization: `Basic ${Buffer.from(`${this.options.oauth?.id}:${this.options.oauth?.secret}`).toString('base64')}`,
+				// eslint-disable-next-line @typescript-eslint/naming-convention
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		});
