@@ -225,7 +225,7 @@ export class Context {
 	 */
 	public async respond(response: string | MessagePayload | WebhookEditMessageOptions): Promise<void> {
 		const interaction = this.getInteraction<CommandInteraction>();
-		if (interaction.replied) {
+		if (interaction.replied || interaction.deferred) {
 			if (typeof response === 'string') {
 				await interaction.editReply({
 					content: response,
