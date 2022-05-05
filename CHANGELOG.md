@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.2](https://github.com/Symbux/Turbo-Discord/compare/v0.5.1...v0.5.2) - 2022-05-05
+
+### Commits
+
+- Updated changelog. [`fb50865`](https://github.com/Symbux/Turbo-Discord/commit/fb50865728a0443a5c46fccf5ce079a13dae35de)
+- Bumped version. [`beae28a`](https://github.com/Symbux/Turbo-Discord/commit/beae28a9d83b44897c910b0409d240631688a0e9)
+- Added deferred check to make sure if something has been deferred, editReply will be called instead of reply. [`4766d6f`](https://github.com/Symbux/Turbo-Discord/commit/4766d6f47e25d2d8021ec5bf2ab15b1a1b217eea)
+
 ## [v0.5.1](https://github.com/Symbux/Turbo-Discord/compare/v0.5.0...v0.5.1) - 2022-04-26
 
 ### Commits
