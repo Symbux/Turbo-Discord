@@ -1,7 +1,6 @@
-import { MessageEmbed, MessageActionRowComponentResolvable, MessageActionRow, MessageButton, MessageButtonStyleResolvable, CommandInteraction, Message, MessageSelectMenu } from 'discord.js';
+import { MessageEmbed, MessageActionRowComponentResolvable, MessageActionRow, MessageButton, MessageButtonStyleResolvable, CommandInteraction, Message, MessageSelectMenu, TextChannel, User } from 'discord.js';
 import { ActionBaseOptions, ActionConfirmOptions, ActionChoiceItem, ActionSelectItem, ActionSelectOptions, ActionChoiceOptions } from '../types/context';
 import { Context } from '../service/context';
-import { randomBytes } from 'node:crypto';
 import { ILogger } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
 
@@ -133,12 +132,53 @@ export class ContextActions {
 		return collectedInteraction.values;
 	}
 
-	private createActionRow(...components: MessageActionRowComponentResolvable[] | MessageActionRowComponentResolvable[][]): MessageActionRow {
+	/**
+	 * Will ask a user for text input, either in the same channel or via DM.
+	 *
+	 * @param channel The channel or user to send the message to.
+	 * @param question The question to send.
+	 * @returns string | null
+	 */
+	public async input(channel: TextChannel | User, question: string): Promise<string | null> {
+
+		// Send question and wait for message.
+		const message = await channel.send(question);
+		const response = await message.channel.awaitMessages({
+			filter: m => m.author.id === message.author.id,
+			max: 1,
+			time: 240000,
+			errors: ['time'],
+		});
+
+		// Check for answer.
+		if (response.size > 0 && response.first()?.content) {
+			return String(response.first()?.content);
+		}
+
+		// Return false.
+		return null;
+	}
+
+	/**
+	 * Creates an action row, just a shortcut really.
+	 *
+	 * @param components The components to send.
+	 * @returns MessageActionRow
+	 */
+	public createActionRow(...components: MessageActionRowComponentResolvable[] | MessageActionRowComponentResolvable[][]): MessageActionRow {
 		return new MessageActionRow()
 			.addComponents(...components);
 	}
 
-	private createSelect(choices: ActionSelectItem[], customId: string, options?: ActionSelectOptions): MessageSelectMenu {
+	/**
+	 * Will create and return a select box.
+	 *
+	 * @param choices The choices to send.
+	 * @param customId A custom ID.
+	 * @param options The options for the select.
+	 * @returns MessageSelectMenu
+	 */
+	public createSelect(choices: ActionSelectItem[], customId: string, options?: ActionSelectOptions): MessageSelectMenu {
 		return new MessageSelectMenu()
 			.setMinValues(options?.minValues || 1)
 			.setMaxValues(options?.maxValues || 1)
@@ -147,22 +187,33 @@ export class ContextActions {
 			.setOptions(choices);
 	}
 
-	private createButton(label: string, style: MessageButtonStyleResolvable, customId: string): MessageButton {
+	/**
+	 * Will create and return a button.
+	 *
+	 * @param label The button label.
+	 * @param style The button style.
+	 * @param customId A custom ID.
+	 * @returns MessageButton
+	 */
+	public createButton(label: string, style: MessageButtonStyleResolvable, customId: string): MessageButton {
 		return new MessageButton()
 			.setCustomId(customId)
 			.setLabel(label)
 			.setStyle(style);
 	}
 
-	private createEmbed(question: string, options?: ActionBaseOptions): MessageEmbed {
+	/**
+	 * Will create and return a message embed.
+	 *
+	 * @param question The question to send.
+	 * @param options The options for the embed.
+	 * @returns MessageEmbed
+	 */
+	public createEmbed(question: string, options?: ActionBaseOptions): MessageEmbed {
 		const embed = new MessageEmbed();
 		embed.setTitle(question);
 		if (options?.description) embed.setDescription(options.description);
 		if (options?.fields) embed.addFields(options.fields);
 		return embed;
-	}
-
-	private generateToken(): string {
-		return randomBytes(16).toString('hex');
 	}
 }

@@ -4,6 +4,7 @@ import { Inject } from '@symbux/injector';
 import { Session } from '../module/session';
 import { Queue } from '../module/queue';
 import { ContextActions } from '../context/action';
+import { randomBytes } from 'node:crypto';
 
 /**
  * Context class for the Discord plugin.
@@ -146,6 +147,16 @@ export class Context {
 	}
 
 	/**
+	 * Will defer an update, only usable by buttons, select menus
+	 * and message components.
+	 */
+	public async deferUpdate(): Promise<void> {
+		if (this.interaction.isButton() || this.interaction.isSelectMenu() || this.interaction.isMessageComponent()) {
+			await this.interaction.deferUpdate();
+		}
+	}
+
+	/**
 	 * Checks whether the interaction user has a single permission or
 	 * every permission given in the array.
 	 *
@@ -266,5 +277,14 @@ export class Context {
 			if (!this.interaction.isUserContextMenu()) return null;
 			return this.interaction.targetUser as User;
 		}
+	}
+
+	/**
+	 * Will generate and return a random string.
+	 *
+	 * @returns string
+	 */
+	public generateToken(): string {
+		return randomBytes(16).toString('hex');
 	}
 }
