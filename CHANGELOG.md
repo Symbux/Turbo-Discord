@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.4](https://github.com/Symbux/Turbo-Discord/compare/v0.5.3...v0.5.4) - 2022-05-13
+
+### Commits
+
+- Fixed a bug with routing for select menu's which was not checking against controller name for perm routing. [`b14dabc`](https://github.com/Symbux/Turbo-Discord/commit/b14dabcbae619ad7be71cd0602076ba7b7a5cc98)
+- Updated changelog [`18574dc`](https://github.com/Symbux/Turbo-Discord/commit/18574dc468ad38c1141ab67c5bb52d70fd704c5c)
+- Bumped package version. [`1f1d38a`](https://github.com/Symbux/Turbo-Discord/commit/1f1d38af551cf0cad040bdf3f98c738420dd49c4)
+
 ## [v0.5.3](https://github.com/Symbux/Turbo-Discord/compare/v0.5.2...v0.5.3) - 2022-05-10
 
 ### Commits
