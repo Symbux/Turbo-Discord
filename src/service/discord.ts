@@ -588,7 +588,7 @@ export class DiscordService extends AbstractService implements IService {
 		}
 
 		// Now we need to check for controllers matching the first part of the custom ID.
-		const controller = this.getControllerByCustomId(customId);
+		const controller = this.getControllerByName(customId) || this.getControllerByCustomId(customId);
 		if (!controller) throw new Error('Could not find valid controller to serve the command.');
 
 		// Now we need to find the default command.
