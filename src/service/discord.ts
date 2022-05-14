@@ -1,7 +1,5 @@
 import { AbstractService, Service, IService, Registry, DecoratorHelper } from '@symbux/turbo';
 import { Client, Interaction, CacheType, CommandInteraction, SelectMenuInteraction, ButtonInteraction, ClientEvents, AutocompleteInteraction, ContextMenuInteraction } from 'discord.js';
-import { REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/v9';
 import { ContextMenuCommandBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { Injector } from '@symbux/injector';
 import { IActivityItem, IOptions } from '../types/base';
@@ -282,10 +280,7 @@ export class DiscordService extends AbstractService implements IService {
 
 		// Register the commands with all connected guilds.
 		this.client.guilds.cache.forEach(async guild => {
-			const request = new REST({ version: '9' }).setToken(this.options.bot.token);
-			const userId = this.client.user?.id;
-			if (!userId) throw new Error('Failed to get the user id from client.');
-			await request.put(Routes.applicationGuildCommands(userId, guild.id), { body: slashCommands });
+			await guild.commands.set(slashCommands);
 		});
 
 		// Note success.
@@ -294,12 +289,14 @@ export class DiscordService extends AbstractService implements IService {
 
 	// Unregister the commands with all connected guilds.
 	private async unregisterCommands(): Promise<void> {
-		await Promise.all(this.client.guilds.cache.map(async guild => {
-			const guildCommands = await guild.commands.fetch();
-			await Promise.all(guildCommands.map(async command => {
-				await command.delete();
+		if (this.options.bot.unregisterCommands) {
+			await Promise.all(this.client.guilds.cache.map(async guild => {
+				const guildCommands = await guild.commands.fetch();
+				await Promise.all(guildCommands.map(async command => {
+					await command.delete();
+				}));
 			}));
-		}));
+		}
 	}
 
 	/**

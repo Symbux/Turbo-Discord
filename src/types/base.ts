@@ -18,6 +18,7 @@ export interface IOptions {
 		interval?: number;
 		intents?: BitFieldResolvable<IntentsString, number>;
 		events?: Array<keyof ClientEvents>;
+		unregisterCommands?: boolean;
 	};
 	oauth?: {
 		id: string;
