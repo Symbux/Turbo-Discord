@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.5](https://github.com/Symbux/Turbo-Discord/compare/v0.5.4...v0.5.5) - 2022-05-14
+
+### Commits
+
+- Added fixes to support not unregistering commands. [`ef1513b`](https://github.com/Symbux/Turbo-Discord/commit/ef1513bf5cfbed9748519c244f6d3fc60844436f)
+- Updated changelog. [`986a2ac`](https://github.com/Symbux/Turbo-Discord/commit/986a2acb012f6e542d057fcc93afd282be672a15)
+
 ## [v0.5.4](https://github.com/Symbux/Turbo-Discord/compare/v0.5.3...v0.5.4) - 2022-05-13
 
 ### Commits
