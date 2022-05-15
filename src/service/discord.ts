@@ -280,23 +280,25 @@ export class DiscordService extends AbstractService implements IService {
 
 		// Register the commands with all connected guilds.
 		this.client.guilds.cache.forEach(async guild => {
-			if (this.options.bot.commands.register) {
+			if (!this.options.bot?.commands?.disableRegister) {
 				await guild.commands.set(slashCommands);
+				this.logger.verbose('PLUGIN:DISCORD', `Registered ${slashCommands.length} commands.`);
 			}
 		});
 
 		// Note success.
-		this.logger.verbose('PLUGIN:DISCORD', `Registered ${slashCommands.length} commands.`);
+		this.logger.verbose('PLUGIN:DISCORD', 'Command setup was completed.');
 	}
 
 	// Unregister the commands with all connected guilds.
 	private async unregisterCommands(): Promise<void> {
-		if (this.options.bot.commands.unregister) {
+		if (!this.options.bot?.commands?.disableUnregister) {
 			await Promise.all(this.client.guilds.cache.map(async guild => {
 				const guildCommands = await guild.commands.fetch();
 				await Promise.all(guildCommands.map(async command => {
 					await command.delete();
 				}));
+				this.logger.verbose('PLUGIN:DISCORD', 'Unregistered commands.');
 			}));
 		}
 	}
