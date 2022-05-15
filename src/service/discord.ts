@@ -280,7 +280,9 @@ export class DiscordService extends AbstractService implements IService {
 
 		// Register the commands with all connected guilds.
 		this.client.guilds.cache.forEach(async guild => {
-			await guild.commands.set(slashCommands);
+			if (this.options.bot.commands.register) {
+				await guild.commands.set(slashCommands);
+			}
 		});
 
 		// Note success.
@@ -289,7 +291,7 @@ export class DiscordService extends AbstractService implements IService {
 
 	// Unregister the commands with all connected guilds.
 	private async unregisterCommands(): Promise<void> {
-		if (this.options.bot.unregisterCommands) {
+		if (this.options.bot.commands.unregister) {
 			await Promise.all(this.client.guilds.cache.map(async guild => {
 				const guildCommands = await guild.commands.fetch();
 				await Promise.all(guildCommands.map(async command => {
