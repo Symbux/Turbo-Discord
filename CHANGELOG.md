@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.8](https://github.com/Symbux/Turbo-Discord/compare/v0.5.7...v0.5.8) - 2022-05-15
+
+### Commits
+
+- Changed disable commands register/unregister in settings. [`b29146d`](https://github.com/Symbux/Turbo-Discord/commit/b29146da1860ee20c20c4c4dbb752e2878869efc)
+- Updated changelog. [`efc62ec`](https://github.com/Symbux/Turbo-Discord/commit/efc62ecbf7463b17008d6f7c947d6958d271f24e)
+
 ## [v0.5.7](https://github.com/Symbux/Turbo-Discord/compare/v0.5.6...v0.5.7) - 2022-05-15
 
 ### Commits
