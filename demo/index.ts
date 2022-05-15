@@ -24,10 +24,13 @@ engine.use(new HttpPlugin({
 // Register plugin.
 engine.use(new DiscordPlugin({
 	bot: {
-		unregisterCommands: true,
 		token: String(process.env.BOT_TOKEN),
 		interval: 5,
 		events: ['messageCreate'],
+		commands: {
+			register: true,
+			unregister: true,
+		},
 		intents: [
 			Intents.FLAGS.DIRECT_MESSAGES,
 			Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
