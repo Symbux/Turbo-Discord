@@ -1,5 +1,5 @@
 import { AbstractService, Service, IService, Registry, DecoratorHelper } from '@symbux/turbo';
-import { Client, Interaction, CacheType, CommandInteraction, SelectMenuInteraction, ButtonInteraction, ClientEvents, AutocompleteInteraction, ContextMenuInteraction } from 'discord.js';
+import { Client, Interaction, CacheType, CommandInteraction, SelectMenuInteraction, ButtonInteraction, ClientEvents, AutocompleteInteraction, ContextMenuInteraction, ModalSubmitInteraction } from 'discord.js';
 import { ContextMenuCommandBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { Injector } from '@symbux/injector';
 import { IActivityItem, IOptions } from '../types/base';
@@ -416,9 +416,14 @@ export class DiscordService extends AbstractService implements IService {
 				await this.onAutocomplete(interaction);
 			}
 
-			// On reaction interaction.
+			// On context menu interaction.
 			if (interaction.isContextMenu()) {
 				await this.onContextMenu(interaction);
+			}
+
+			// On modal interaction.
+			if (interaction.isModalSubmit()) {
+				await this.onModalSubmit(interaction);
 			}
 
 		} catch(err) {
@@ -667,6 +672,42 @@ export class DiscordService extends AbstractService implements IService {
 
 		// Now call the method with the context.
 		await controller.instance[contextMenu.method](context);
+	}
+
+	/**
+	 * Will process the modal submit interactions.
+	 *
+	 * @param interaction The interaction for the modal submit.
+	 * @returns Promise<void>
+	 * @private
+	 * @async
+	 */
+	private async onModalSubmit(interaction: ModalSubmitInteraction): Promise<void> {
+		console.log(typeof interaction);
+
+		// Firstly let's lookup the context menu.
+		// const contextMenu = this.contextMenus[interaction.];
+		// if (!contextMenu) throw new Error('Could not find valid context menu to serve the command.');
+
+		// // Verify the controller.
+		// const controller = this.getControllerByName(contextMenu.controller);
+		// if (!controller) throw new Error('Could not find valid controller to serve the command.');
+
+		// // Now let's check to see if the method exists.
+		// if (typeof controller.instance[contextMenu.method] === 'undefined') throw new Error('The method assigned to this command does not exist.');
+
+		// // Let's build a context.
+		// const context = new Context(interaction, 'context-menu', this.queue, this.session);
+
+		// // Now we need to run authentication.
+		// const authSuccess = await this.auth.handle('discord', context, controller.instance, contextMenu.method);
+		// if (!authSuccess) {
+		// 	this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
+		// 	return;
+		// }
+
+		// // Now call the method with the context.
+		// await controller.instance[contextMenu.method](context);
 	}
 
 	/**

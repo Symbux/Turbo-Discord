@@ -33,6 +33,10 @@ export interface ActionSelectOptions extends ActionBaseOptions {
 	placeholder?: string;
 }
 
+export interface ActionModalOptions {
+	timeout?: number;
+}
+
 /* eslint-disable @typescript-eslint/no-empty-interface */
 export interface ActionChoiceOptions extends ActionBaseOptions {}
 /* eslint-enable @typescript-eslint/no-empty-interface */

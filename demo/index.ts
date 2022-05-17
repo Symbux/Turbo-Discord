@@ -24,6 +24,10 @@ engine.use(new HttpPlugin({
 // Register plugin.
 engine.use(new DiscordPlugin({
 	bot: {
+		commands: {
+			disableRegister: true,
+			disableUnregister: true,
+		},
 		token: String(process.env.BOT_TOKEN),
 		interval: 5,
 		events: ['messageCreate'],

@@ -1,5 +1,8 @@
-import { MessageEmbed, MessageActionRowComponentResolvable, MessageActionRow, MessageButton, MessageButtonStyleResolvable, CommandInteraction, Message, MessageSelectMenu, TextChannel, User } from 'discord.js';
-import { ActionBaseOptions, ActionConfirmOptions, ActionChoiceItem, ActionSelectItem, ActionSelectOptions, ActionChoiceOptions } from '../types/context';
+import {
+	MessageEmbed, MessageActionRow, MessageButton, MessageButtonStyleResolvable, CommandInteraction, Message, MessageSelectMenu, TextChannel,
+	User, ModalSubmitFieldsResolver, Modal, ModalActionRowComponent, MessageActionRowComponentResolvable, TextInputComponent, ModalSubmitInteraction,
+} from 'discord.js';
+import { ActionConfirmOptions, ActionChoiceItem, ActionSelectItem, ActionSelectOptions, ActionChoiceOptions, ActionModalOptions, ActionBaseOptions } from '../types/context';
 import { Context } from '../service/context';
 import { ILogger } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
@@ -157,6 +160,41 @@ export class ContextActions {
 
 		// Return false.
 		return null;
+	}
+
+	public async modal(title: string, components: TextInputComponent[], options?: ActionModalOptions): Promise<{
+		interaction: ModalSubmitInteraction,
+		fields: ModalSubmitFieldsResolver
+	}> {
+
+		// Create the modal.
+		const modal = new Modal()
+			.setTitle(title)
+			.setCustomId('internal:modal-submit')
+			.addComponents(...components.map(
+				component => new MessageActionRow<ModalActionRowComponent>()
+					.addComponents(component),
+			));
+
+		// Check for whether the interaction has been deferred or replied.
+		const interaction = this.context.getInteraction<CommandInteraction>();
+		if (interaction.replied || interaction.deferred) {
+			throw new Error('When working with modals, you can not defer or reply to the interaction before calling the modal.');
+		}
+
+		// Now send the modal.
+		await interaction.showModal(modal);
+
+		// Await the result.
+		const result = await interaction.awaitModalSubmit({
+			time: options?.timeout || 300 * 1000,
+		});
+
+		// Return the fields resolver.
+		return {
+			interaction: result,
+			fields: result.fields,
+		};
 	}
 
 	/**
