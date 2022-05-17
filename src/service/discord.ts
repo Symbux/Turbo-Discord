@@ -460,15 +460,9 @@ export class DiscordService extends AbstractService implements IService {
 		const context = new Context(interaction, 'command', this.queue, this.session);
 
 		// Now we need to run authentication.
-		const authResponse = await this.auth.handle('discord', context, controller.instance, controllerMethod);
-		if (authResponse.failed && authResponse.stop) {
+		const authSuccess = await this.auth.handle('discord', context, controller.instance, controllerMethod);
+		if (!authSuccess) {
 			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
-			return;
-		}
-
-		// Check for standard stop.
-		if (!authResponse.failed && authResponse.stop) {
-			this.logger.warn('PLUGIN:DISCORD', 'The command was stopped by middleware.');
 			return;
 		}
 
@@ -498,15 +492,9 @@ export class DiscordService extends AbstractService implements IService {
 		const context = new Context(interaction, 'subcommand', this.queue, this.session);
 
 		// Now we need to run authentication.
-		const authResponse = await this.auth.handle('discord', context, controller.instance, controllerMethod);
-		if (authResponse.failed && authResponse.stop) {
-			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
-			return;
-		}
-
-		// Check for standard stop.
-		if (!authResponse.failed && authResponse.stop) {
-			this.logger.warn('PLUGIN:DISCORD', 'The command was stopped by middleware.');
+		const authSuccess = await this.auth.handle('discord', context, controller.instance, controllerMethod);
+		if (!authSuccess) {
+			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping sub-command.');
 			return;
 		}
 
@@ -549,15 +537,9 @@ export class DiscordService extends AbstractService implements IService {
 		const context = new Context(interaction, 'button', this.queue, this.session);
 
 		// Now we need to run authentication.
-		const authResponse = await this.auth.handle('discord', context, controller.instance, controllerMethod);
-		if (authResponse.failed && authResponse.stop) {
-			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
-			return;
-		}
-
-		// Check for standard stop.
-		if (!authResponse.failed && authResponse.stop) {
-			this.logger.warn('PLUGIN:DISCORD', 'The command was stopped by middleware.');
+		const authSuccess = await this.auth.handle('discord', context, controller.instance, controllerMethod);
+		if (!authSuccess) {
+			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping button.');
 			return;
 		}
 
@@ -600,15 +582,9 @@ export class DiscordService extends AbstractService implements IService {
 		const context = new Context(interaction, 'selectmenu', this.queue, this.session);
 
 		// Now we need to run authentication.
-		const authResponse = await this.auth.handle('discord', context, controller.instance, controllerMethod);
-		if (authResponse.failed && authResponse.stop) {
-			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
-			return;
-		}
-
-		// Check for standard stop.
-		if (!authResponse.failed && authResponse.stop) {
-			this.logger.warn('PLUGIN:DISCORD', 'The command was stopped by middleware.');
+		const authSuccess = await this.auth.handle('discord', context, controller.instance, controllerMethod);
+		if (!authSuccess) {
+			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping select menu.');
 			return;
 		}
 
@@ -683,15 +659,9 @@ export class DiscordService extends AbstractService implements IService {
 		const context = new Context(interaction, 'context-menu', this.queue, this.session);
 
 		// Now we need to run authentication.
-		const authResponse = await this.auth.handle('discord', context, controller.instance, contextMenu.method);
-		if (authResponse.failed && authResponse.stop) {
+		const authSuccess = await this.auth.handle('discord', context, controller.instance, contextMenu.method);
+		if (!authSuccess) {
 			this.logger.error('PLUGIN:DISCORD', 'Authentication failed, stopping command.');
-			return;
-		}
-
-		// Check for standard stop.
-		if (!authResponse.failed && authResponse.stop) {
-			this.logger.warn('PLUGIN:DISCORD', 'The command was stopped by middleware.');
 			return;
 		}
 
