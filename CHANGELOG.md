@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.5.10](https://github.com/Symbux/Turbo-Discord/compare/v0.5.9...v0.5.10) - 2022-05-17
+
+### Commits
+
+- Updated plugin to follow correct authentication from new turbo updates. [`64c0c10`](https://github.com/Symbux/Turbo-Discord/commit/64c0c102bab2de1bd8c10da657e973bbdc020186)
+- Updated turbo package to include middleware fix. [`7504e8a`](https://github.com/Symbux/Turbo-Discord/commit/7504e8a935103f55bd8d72668a371d325479efad)
+- Update changelog. [`730375f`](https://github.com/Symbux/Turbo-Discord/commit/730375f848e24e4d55dbdbce68530b11b9e97fe6)
+- Bumped package version. [`78dc641`](https://github.com/Symbux/Turbo-Discord/commit/78dc641571638ab502bfbb8af335425d7b5dd4ed)
+
 ## [v0.5.9](https://github.com/Symbux/Turbo-Discord/compare/v0.5.8...v0.5.9) - 2022-05-17
 
 ### Commits
