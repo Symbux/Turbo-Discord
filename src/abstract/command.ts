@@ -1,5 +1,3 @@
-import { GenerateKey } from '../helper/misc';
-
 /**
  * The base class for all commands, this provides the
  * command's uniquely generated key and offers access to it.
@@ -7,15 +5,4 @@ import { GenerateKey } from '../helper/misc';
  * @class AbstractCommand
  * @plugin Turbo-Discord
  */
-export class AbstractCommand {
-	private randomKey = GenerateKey(8);
-
-	/**
-	 * Will get the command's unique key.
-	 *
-	 * @returns string
-	 */
-	public getUniqueKey(): string {
-		return this.randomKey;
-	}
-}
+export class AbstractCommand {}

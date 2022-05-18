@@ -2,7 +2,6 @@ import { Client, Guild, GuildMember, Interaction, PermissionResolvable, TextChan
 import { Translator } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
 import { Session } from '../module/session';
-import { Queue } from '../module/queue';
 import { ContextActions } from '../context/action';
 import { randomBytes } from 'node:crypto';
 
@@ -28,7 +27,6 @@ export class Context {
 	public constructor(
 		private interaction: Interaction,
 		public interactionType: string,
-		public queue: Queue,
 		public session: Session,
 	) {
 		this.languages = ['en-GB', 'en-US'];

@@ -2,7 +2,6 @@ import { Client, ClientEvents } from 'discord.js';
 import { Translator } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
 import { Session } from '../module/session';
-import { Queue } from '../module/queue';
 
 /**
  * Context class for the Discord plugin.
@@ -26,7 +25,6 @@ export class GenericContext {
 		private client: Client,
 		public eventType: string,
 		public args: any[],
-		public queue: Queue,
 		public session: Session,
 	) {
 		this.languages = ['en-GB', 'en-US'];

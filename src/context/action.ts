@@ -254,4 +254,22 @@ export class ContextActions {
 		if (options?.fields) embed.addFields(options.fields);
 		return embed;
 	}
+
+	/**
+	 * This will create a modal that can be sent to a user.
+	 *
+	 * @param title The title of the modal.
+	 * @param customId A custom ID for the modal.
+	 * @param components The text input components to send.
+	 * @returns Modal
+	 */
+	public createModal(title: string, customId: string, components: TextInputComponent[]): Modal {
+		return new Modal()
+			.setTitle(title)
+			.setCustomId(customId)
+			.addComponents(...components.map(
+				component => new MessageActionRow<ModalActionRowComponent>()
+					.addComponents(component),
+			));
+	}
 }
