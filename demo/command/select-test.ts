@@ -22,15 +22,22 @@ export default class SelectTestCommand extends AbstractCommand {
 						{ label: 'Option 3', value: 'option3' },
 					], 'SelectTestCommand:something-select'),
 				),
+				context.action.createActionRow(
+					context.action.createButton('Select something.', 'PRIMARY', 'SelectTestCommand:something-button'),
+				),
 			],
 		});
 	}
 
 	@On.SelectMenu('something-select')
 	public async onSelect(context: Context): Promise<void> {
-		await context.defer();
 		const interaction = context.getInteraction<SelectMenuInteraction>();
-		const channel = context.getChannel();
-		await channel.send(`You selected: ${interaction.values.join(', ')}`);
+		await context.respond(`You selected: ${interaction.values.join(', ')}`);
+	}
+
+	@On.Button('something-button')
+	public async onButton(context: Context): Promise<void> {
+		const interaction = context.getInteraction<SelectMenuInteraction>();
+		await context.respond(`You selected: ${interaction.customId}`);
 	}
 }

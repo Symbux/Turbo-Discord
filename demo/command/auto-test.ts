@@ -1,6 +1,6 @@
 import { Command, AbstractCommand, On, Context } from '../../src/index';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { AutocompleteInteraction } from 'discord.js';
+import { AutocompleteInteraction, CommandInteraction } from 'discord.js';
 
 @Command(
 	new SlashCommandBuilder()
@@ -70,6 +70,27 @@ export default class AutoTestCommand extends AbstractCommand {
 		const interaction = context.getInteraction<AutocompleteInteraction>();
 		const query = interaction.options.getFocused() as string;
 		await interaction.respond(this.baseAutocomplete(this.books, query));
+	}
+
+	@On.SubCommand('names')
+	public async onAutoTestNames(context: Context): Promise<void> {
+		const interaction = context.getInteraction<CommandInteraction>();
+		const query = interaction.options.getString('name', true) as string;
+		await context.respond(`You typed: ${query}`);
+	}
+
+	@On.SubCommand('ages')
+	public async onAutoTestAges(context: Context): Promise<void> {
+		const interaction = context.getInteraction<CommandInteraction>();
+		const query = interaction.options.getString('age', true) as string;
+		await context.respond(`You typed: ${query}`);
+	}
+
+	@On.SubCommand('books')
+	public async onAutoTestBooks(context: Context): Promise<void> {
+		const interaction = context.getInteraction<CommandInteraction>();
+		const query = interaction.options.getString('name', true) as string;
+		await context.respond(`You typed: ${query}`);
 	}
 
 	private baseAutocomplete(data: string[], query: string): Array<{ name: string, value: string }> {

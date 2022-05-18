@@ -180,7 +180,7 @@ export default class TodoCommand extends AbstractCommand {
 		});
 	}
 
-	@On.Autocomplete()
+	@On.Autocomplete('task', 'remove')
 	public async onAutocompleteTask(context: Context): Promise<void> {
 		const interaction = context.getInteraction<AutocompleteInteraction>();
 		const query = interaction.options.getFocused() as string;

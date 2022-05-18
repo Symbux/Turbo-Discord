@@ -25,7 +25,7 @@ engine.use(new HttpPlugin({
 engine.use(new DiscordPlugin({
 	bot: {
 		commands: {
-			disableRegister: true,
+			disableRegister: false,
 			disableUnregister: true,
 		},
 		token: String(process.env.BOT_TOKEN),
