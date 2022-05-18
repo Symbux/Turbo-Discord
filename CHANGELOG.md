@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.6.0](https://github.com/Symbux/Turbo-Discord/compare/v0.5.10...v0.6.0) - 2022-05-18
+
+### Commits
+
+- Rewrote the code for the event handling due to it becoming to hard to main, this also comes with vvarious changes for autocomplete, now you must define specific things and they are automatically scoped to the command they are in, and added support for modals. [`3bc17c5`](https://github.com/Symbux/Turbo-Discord/commit/3bc17c59cf6832ad99906a21a5887414323e25ad)
+- Updated demo to support the new functionality. [`1c4d492`](https://github.com/Symbux/Turbo-Discord/commit/1c4d4921d9594d07507d3a8e61c26e81a1cd311a)
+- Created new action for modal to allow developers to create modals. [`5fb3652`](https://github.com/Symbux/Turbo-Discord/commit/5fb365233fa85b4ebf9e1a6021501f995134b61f)
+- Updated changelog. [`0ecdbd8`](https://github.com/Symbux/Turbo-Discord/commit/0ecdbd804b054d3be4bc7fae474f20fc451e4f47)
+- Bumped package. [`47dac49`](https://github.com/Symbux/Turbo-Discord/commit/47dac497d6fba2c368a5d16218c452cfc6aa2064)
+
 ## [v0.5.10](https://github.com/Symbux/Turbo-Discord/compare/v0.5.9...v0.5.10) - 2022-05-17
 
 ### Commits
