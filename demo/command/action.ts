@@ -1,5 +1,6 @@
 import { Command, AbstractCommand, On, Context } from '../../src/index';
 import { SlashCommandBuilder } from '@discordjs/builders';
+import { ButtonStyle } from 'discord.js';
 
 @Command(
 	new SlashCommandBuilder()
@@ -45,9 +46,9 @@ export default class ActionCommand extends AbstractCommand {
 	@On.SubCommand('choice')
 	public async onChoice(context: Context): Promise<void> {
 		const choice = await context.action.choice('What is your favorite color?', [
-			{ name: 'Red', value: 'red', style: 'PRIMARY' },
-			{ name: 'Blue', value: 'blue', style: 'SUCCESS' },
-			{ name: 'Green', value: 'green', style: 'DANGER' },
+			{ name: 'Red', value: 'red', style: ButtonStyle.Primary },
+			{ name: 'Blue', value: 'blue', style: ButtonStyle.Success },
+			{ name: 'Green', value: 'green', style: ButtonStyle.Danger },
 		], {
 			ephermeral: false,
 			fields: [

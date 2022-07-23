@@ -1,6 +1,6 @@
 import { Command, AbstractCommand, On, Add, Context } from '../../src/index';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { AutocompleteInteraction, CommandInteraction, ContextMenuInteraction, MessageEmbed } from 'discord.js';
+import { AutocompleteInteraction, CommandInteraction, ContextMenuCommandInteraction, EmbedBuilder } from 'discord.js';
 
 @Command(
 	new SlashCommandBuilder()
@@ -66,7 +66,7 @@ export default class TodoCommand extends AbstractCommand {
 		const interaction = context.getInteraction<CommandInteraction>();
 
 		// Create the embed.
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle('To-Do List')
 			.setDescription(`Here is your to-do list.\n\n${this.tasks.map(task => `${task.completed ? '✅' : '❌'} ${task.name}`).join('\n')}`);
 
@@ -80,7 +80,7 @@ export default class TodoCommand extends AbstractCommand {
 	public async onAdd(context: Context, name?: string): Promise<void> {
 		await context.defer();
 		const interaction = context.getInteraction<CommandInteraction>();
-		const taskName = name || interaction.options.getString('task', true);
+		const taskName = name || interaction.options.get('task', true).value;
 
 		// Confirm intent.
 		const shouldContinue = await context.action.confirm(`Add task "${taskName}"?`);
@@ -94,7 +94,7 @@ export default class TodoCommand extends AbstractCommand {
 		}
 
 		// Add the task.
-		this.tasks.push({ id: String(new Date().valueOf()), name: taskName, completed: false });
+		this.tasks.push({ id: String(new Date().valueOf()), name: taskName as string, completed: false });
 		await interaction.editReply({
 			content: `Added task: "${taskName}".`,
 			embeds: [],
@@ -106,7 +106,7 @@ export default class TodoCommand extends AbstractCommand {
 	public async onRemove(context: Context): Promise<void> {
 		await context.defer();
 		const interaction = context.getInteraction<CommandInteraction>();
-		const taskId = interaction.options.getString('task', true);
+		const taskId = interaction.options.get('task', true).value;
 
 		// Get the specific task.
 		const task = this.tasks.find(task => task.id === taskId);
@@ -145,10 +145,10 @@ export default class TodoCommand extends AbstractCommand {
 	public async onComplete(context: Context): Promise<void> {
 		await context.defer();
 		const interaction = context.getInteraction<CommandInteraction>();
-		const taskId = interaction.options.getString('task', true);
+		const taskId = interaction.options.get('task', true);
 
 		// Get the specific task.
-		const task = this.tasks.find(task => task.id === taskId);
+		const task = this.tasks.find(task => task.id === taskId.value);
 		if (!task) {
 			await interaction.editReply({
 				content: 'Task not found.',
@@ -190,9 +190,19 @@ export default class TodoCommand extends AbstractCommand {
 		}).map(task => { return { name: task.name, value: task.id }}));
 	}
 
+	@On.Autocomplete('task', 'complete')
+	public async onAutocompleteTaskComplete(context: Context): Promise<void> {
+		const interaction = context.getInteraction<AutocompleteInteraction>();
+		const query = interaction.options.getFocused() as string;
+		interaction.respond(this.tasks.filter(task => {
+			if (!query || String(query).length === 0) return true;
+			return task.name.toLowerCase().includes(query.toLowerCase());
+		}).map(task => { return { name: task.name, value: task.id }}));
+	}
+
 	@Add.MessageContext('Add To-Do')
 	public async onAddToDoContextMessage(context: Context): Promise<void> {
-		const interaction = context.getInteraction<ContextMenuInteraction>();
+		const interaction = context.getInteraction<ContextMenuCommandInteraction>();
 
 		// Check for valid message.
 		const message = context.getContextMessage();

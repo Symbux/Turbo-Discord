@@ -1,7 +1,7 @@
 import { ContextMenuCommandBuilder, SlashCommandBuilder } from '@discordjs/builders';
 import { Inject, Injector } from '@symbux/injector';
 import { Registry, DecoratorHelper, ILogger, Authentication } from '@symbux/turbo';
-import { Interaction, CacheType, ClientEvents, Client } from 'discord.js';
+import { Interaction, CacheType, ClientEvents, Client, InteractionType } from 'discord.js';
 import { Wait } from '../helper/misc';
 import Handler from './handler';
 import { Session } from './session';
@@ -182,7 +182,7 @@ export default class Router {
 		try {
 
 			// On command interaction.
-			if (interaction.isCommand()) {
+			if (interaction.isChatInputCommand()) {
 
 				// Get subcommand name.
 				const subCommand = interaction.options.getSubcommand(false);
@@ -205,18 +205,18 @@ export default class Router {
 				await this.handler.onSelectMenu(interaction);
 			}
 
-			// On autocomplete interaction.
-			if (interaction.isAutocomplete()) {
-				await this.handler.onAutocomplete(interaction);
-			}
-
 			// On context menu interaction.
-			if (interaction.isContextMenu()) {
+			if (interaction.isContextMenuCommand()) {
 				await this.handler.onContextMenu(interaction);
 			}
 
+			// On autocomplete interaction.
+			if (interaction.type === InteractionType.ApplicationCommandAutocomplete) {
+				await this.handler.onAutocomplete(interaction);
+			}
+
 			// On modal interaction.
-			if (interaction.isModalSubmit()) {
+			if (interaction.type === InteractionType.ModalSubmit) {
 				await this.handler.onModalSubmit(interaction);
 			}
 		} catch(err) {
@@ -228,7 +228,7 @@ export default class Router {
 			await Wait(100);
 
 			// Send the error to the user.
-			if (interaction.isCommand()) {
+			if (interaction.isChatInputCommand()) {
 				if (interaction.replied) {
 					interaction.editReply({
 						content: ':warning:  There was a problem completing that command.',

@@ -1,7 +1,7 @@
 import { AbstractService, Service, IService } from '@symbux/turbo';
-import { Client, ClientEvents } from 'discord.js';
+import { Client, ClientEvents, PresenceData } from 'discord.js';
 import { Injector } from '@symbux/injector';
-import { IActivityItem, IOptions } from '../types/base';
+import { IOptions } from '../types/base';
 import { Session } from '../module/session';
 import Router from '../module/router';
 
@@ -71,7 +71,7 @@ export class DiscordService extends AbstractService implements IService {
 			if (this.options.bot.activities) {
 
 				// Define the get next activity method.
-				const getNextActivity = (activities: IActivityItem[]) => {
+				const getNextActivity = (activities: PresenceData[]) => {
 					if (this.currentActivityIndex >= activities.length) {
 						this.currentActivityIndex = 0;
 					}
@@ -79,7 +79,7 @@ export class DiscordService extends AbstractService implements IService {
 				};
 
 				// Re-type the activities.
-				const activities = this.options.bot.activities as IActivityItem | IActivityItem[];
+				const activities = this.options.bot.activities as PresenceData | PresenceData[];
 				const interval = this.options.bot.interval || 10;
 
 				// Check if an array, and then call the get next activity function.
@@ -87,32 +87,17 @@ export class DiscordService extends AbstractService implements IService {
 
 					// Set the first status.
 					const activity = getNextActivity(activities);
-					this.client.user?.setActivity({
-						name: activity.text,
-						type: activity.type,
-						url: activity.url,
-						shardId: activity.shardId,
-					});
+					this.client.user?.setPresence(activity);
 
 					// Create an interval to change the status.
 					setInterval(() => {
 						const activity = getNextActivity(activities);
-						this.client.user?.setActivity({
-							name: activity.text,
-							type: activity.type,
-							url: activity.url,
-							shardId: activity.shardId,
-						});
+						this.client.user?.setPresence(activity);
 					}, interval * 60000);
 				} else {
 
 					// Set the only available status.
-					this.client.user?.setActivity({
-						name: activities.text,
-						type: activities.type,
-						url: activities.url,
-						shardId: activities.shardId,
-					});
+					this.client.user?.setPresence(activities);
 				}
 			}
 		});

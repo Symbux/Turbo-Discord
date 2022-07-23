@@ -1,11 +1,10 @@
-import {
-	MessageEmbed, MessageActionRow, MessageButton, MessageButtonStyleResolvable, CommandInteraction, Message, MessageSelectMenu, TextChannel,
-	User, ModalSubmitFieldsResolver, Modal, ModalActionRowComponent, MessageActionRowComponentResolvable, TextInputComponent, ModalSubmitInteraction,
-} from 'discord.js';
+import { CommandInteraction, Message, TextChannel, User, ModalSubmitInteraction, ComponentType, ModalSubmitFields, ButtonStyle } from 'discord.js';
 import { ActionConfirmOptions, ActionChoiceItem, ActionSelectItem, ActionSelectOptions, ActionChoiceOptions, ActionModalOptions, ActionBaseOptions } from '../types/context';
 import { Context } from '../service/context';
 import { ILogger } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ModalBuilder, SelectMenuBuilder, TextInputBuilder } from '@discordjs/builders';
+import { AnyMessageComponentBuilder } from '../types/context';
 
 export class ContextActions {
 	@Inject('logger') private logger!: ILogger;
@@ -26,8 +25,8 @@ export class ContextActions {
 
 		// Create the buttons.
 		const buttons = this.createActionRow(
-			this.createButton(options?.labels?.accept || 'Yes', 'SUCCESS', 'internal:confirm:accept'),
-			this.createButton(options?.labels?.reject || 'No', 'DANGER', 'internal:confirm:reject'),
+			this.createButton(options?.labels?.accept || 'Yes', ButtonStyle.Primary, 'internal:confirm:accept'),
+			this.createButton(options?.labels?.reject || 'No', ButtonStyle.Danger, 'internal:confirm:reject'),
 		);
 
 		// Send the confirmation.
@@ -42,7 +41,7 @@ export class ContextActions {
 				await i.deferUpdate();
 				return i.user.id === interaction.user.id;
 			},
-			componentType: 'BUTTON',
+			componentType: ComponentType.Button,
 			time: options?.timeout || 60 * 1000,
 		}).catch(() => this.logger.warn('DISCORD', 'CONFIRM Action was not replied to.'));
 		if (!collectedInteraction) return null;
@@ -69,7 +68,7 @@ export class ContextActions {
 
 		// Create the buttons.
 		const buttons = this.createActionRow(...choices.map(choice => {
-			return this.createButton(choice.name, choice.style || 'PRIMARY', `internal:choice:${choice.value}`);
+			return this.createButton(choice.name, choice.style || ButtonStyle.Primary, `internal:choice:${choice.value}`);
 		}));
 
 		// Send the confirmation.
@@ -84,7 +83,7 @@ export class ContextActions {
 				await i.deferUpdate();
 				return i.user.id === interaction.user.id;
 			},
-			componentType: 'BUTTON',
+			componentType: ComponentType.Button,
 			time: options?.timeout || 60 * 1000,
 		}).catch(() => this.logger.warn('DISCORD', 'CHOICE Action was not replied to.'));
 		if (!collectedInteraction) return null;
@@ -126,7 +125,7 @@ export class ContextActions {
 				await i.deferUpdate();
 				return i.user.id === interaction.user.id;
 			},
-			componentType: 'SELECT_MENU',
+			componentType: ComponentType.SelectMenu,
 			time: options?.timeout || 60 * 1000,
 		}).catch(() => this.logger.warn('DISCORD', 'SELECT Action was not replied to.'));
 		if (!collectedInteraction) return null;
@@ -162,18 +161,17 @@ export class ContextActions {
 		return null;
 	}
 
-	public async modal(title: string, components: TextInputComponent[], options?: ActionModalOptions): Promise<{
+	public async modal(title: string, components: TextInputBuilder[], options?: ActionModalOptions): Promise<{
 		interaction: ModalSubmitInteraction,
-		fields: ModalSubmitFieldsResolver
+		fields: ModalSubmitFields,
 	}> {
 
 		// Create the modal.
-		const modal = new Modal()
+		const modal = new ModalBuilder()
 			.setTitle(title)
 			.setCustomId('internal:modal-submit')
-			.addComponents(...components.map(
-				component => new MessageActionRow<ModalActionRowComponent>()
-					.addComponents(component),
+			.addComponents(...components.map(component => new ActionRowBuilder<TextInputBuilder>()
+				.addComponents(component),
 			));
 
 		// Check for whether the interaction has been deferred or replied.
@@ -203,9 +201,9 @@ export class ContextActions {
 	 * @param components The components to send.
 	 * @returns MessageActionRow
 	 */
-	public createActionRow(...components: MessageActionRowComponentResolvable[] | MessageActionRowComponentResolvable[][]): MessageActionRow {
-		return new MessageActionRow()
-			.addComponents(...components);
+	public createActionRow(...components: AnyMessageComponentBuilder[]): ActionRowBuilder<AnyMessageComponentBuilder> {
+		return new ActionRowBuilder()
+			.addComponents(...components) as ActionRowBuilder<AnyMessageComponentBuilder>;
 	}
 
 	/**
@@ -216,8 +214,8 @@ export class ContextActions {
 	 * @param options The options for the select.
 	 * @returns MessageSelectMenu
 	 */
-	public createSelect(choices: ActionSelectItem[], customId: string, options?: ActionSelectOptions): MessageSelectMenu {
-		return new MessageSelectMenu()
+	public createSelect(choices: ActionSelectItem[], customId: string, options?: ActionSelectOptions): SelectMenuBuilder {
+		return new SelectMenuBuilder()
 			.setMinValues(options?.minValues || 1)
 			.setMaxValues(options?.maxValues || 1)
 			.setPlaceholder(options?.placeholder || 'Please select...')
@@ -233,8 +231,8 @@ export class ContextActions {
 	 * @param customId A custom ID.
 	 * @returns MessageButton
 	 */
-	public createButton(label: string, style: MessageButtonStyleResolvable, customId: string): MessageButton {
-		return new MessageButton()
+	public createButton(label: string, style: ButtonStyle, customId: string): ButtonBuilder {
+		return new ButtonBuilder()
 			.setCustomId(customId)
 			.setLabel(label)
 			.setStyle(style);
@@ -247,8 +245,8 @@ export class ContextActions {
 	 * @param options The options for the embed.
 	 * @returns MessageEmbed
 	 */
-	public createEmbed(question: string, options?: ActionBaseOptions): MessageEmbed {
-		const embed = new MessageEmbed();
+	public createEmbed(question: string, options?: ActionBaseOptions): EmbedBuilder {
+		const embed = new EmbedBuilder();
 		embed.setTitle(question);
 		if (options?.description) embed.setDescription(options.description);
 		if (options?.fields) embed.addFields(options.fields);
@@ -263,12 +261,12 @@ export class ContextActions {
 	 * @param components The text input components to send.
 	 * @returns Modal
 	 */
-	public createModal(title: string, customId: string, components: TextInputComponent[]): Modal {
-		return new Modal()
+	public createModal(title: string, customId: string, components: TextInputBuilder[]): ModalBuilder {
+		return new ModalBuilder()
 			.setTitle(title)
 			.setCustomId(customId)
 			.addComponents(...components.map(
-				component => new MessageActionRow<ModalActionRowComponent>()
+				component => new ActionRowBuilder<TextInputBuilder>()
 					.addComponents(component),
 			));
 	}

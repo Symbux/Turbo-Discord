@@ -34,23 +34,23 @@
     "add-peers": "yarn add --peer @symbux/turbo @symbux/injector"
   },
   "peerDependencies": {
-    "@symbux/injector": "^1.4.0",
-    "@symbux/turbo": "^0.6.8"
+    "@symbux/injector": "^1.5.0",
+    "@symbux/turbo": "^0.6.12"
   },
   "devDependencies": {
-    "@types/node": "^17.0.34",
-    "@typescript-eslint/eslint-plugin": "^5.24.0",
-    "@typescript-eslint/parser": "^5.24.0",
+    "@types/node": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7",
     "dotenv": "^16.0.1",
-    "eslint": "^8.15.0",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.4"
+    "eslint": "^8.20.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@discordjs/builders": "^0.13.0",
-    "@discordjs/rest": "^0.4.1",
+    "@discordjs/builders": "^1.0.0",
+    "@discordjs/rest": "^1.0.0",
     "cross-fetch": "^3.1.5",
-    "discord-api-types": "^0.33.0",
-    "discord.js": "^13.7.0"
+    "discord-api-types": "^0.36.3",
+    "discord.js": "^14.0.3"
   }
 }

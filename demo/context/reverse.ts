@@ -1,4 +1,4 @@
-import { MessageContextMenuInteraction } from 'discord.js';
+import { ContextMenuCommandInteraction } from 'discord.js';
 import { AbstractCommand, Add, Context, ContextMenu } from '../../src/index';
 
 @ContextMenu()
@@ -7,7 +7,7 @@ export default class ReverseContext extends AbstractCommand {
 	@Add.MessageContext('Reverse Message')
 	public async onReverseMessage(context: Context): Promise<void> {
 		await context.defer();
-		const interaction = context.getInteraction<MessageContextMenuInteraction>();
+		const interaction = context.getInteraction<ContextMenuCommandInteraction>();
 
 		// Check for valid message.
 		const message = context.getContextMessage();
@@ -23,7 +23,7 @@ export default class ReverseContext extends AbstractCommand {
 	@Add.UserContext('Reverse Name')
 	public async onReverseName(context: Context): Promise<void> {
 		await context.defer();
-		const interaction = context.getInteraction<MessageContextMenuInteraction>();
+		const interaction = context.getInteraction<ContextMenuCommandInteraction>();
 
 		// Check for valid user.
 		const user = context.getContextUser();

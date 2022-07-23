@@ -1,6 +1,6 @@
 import { Command, AbstractCommand, On, Context } from '../../src/index';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { SelectMenuInteraction } from 'discord.js';
+import { ButtonStyle, SelectMenuInteraction } from 'discord.js';
 
 @Command(
 	new SlashCommandBuilder()
@@ -23,7 +23,7 @@ export default class SelectTestCommand extends AbstractCommand {
 					], 'SelectTestCommand:something-select'),
 				),
 				context.action.createActionRow(
-					context.action.createButton('Select something.', 'PRIMARY', 'SelectTestCommand:something-button'),
+					context.action.createButton('Select something.', ButtonStyle.Primary, 'SelectTestCommand:something-button'),
 				),
 			],
 		});

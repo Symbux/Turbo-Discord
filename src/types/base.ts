@@ -1,6 +1,6 @@
 import { IGenericMiddleware } from '@symbux/turbo';
 import { Context } from '../service/context';
-import { BitFieldResolvable, IntentsString, ClientEvents } from 'discord.js';
+import { BitFieldResolvable, GatewayIntentsString, PresenceData, ClientEvents } from 'discord.js';
 import { GenericContext } from '../service/generic-context';
 
 export interface IMiddleware extends IGenericMiddleware {
@@ -14,9 +14,9 @@ export interface IEventMiddleware extends IGenericMiddleware {
 export interface IOptions {
 	bot?: {
 		token: string;
-		activities?: IActivityItem | IActivityItem[];
+		activities?: PresenceData | PresenceData[];
 		interval?: number;
-		intents?: BitFieldResolvable<IntentsString, number>;
+		intents?: BitFieldResolvable<GatewayIntentsString, number>;
 		events?: Array<keyof ClientEvents>;
 		commands?: {
 			disableRegister?: boolean;
@@ -29,13 +29,6 @@ export interface IOptions {
 		scopes: string[];
 		baseUrl: string;
 	};
-}
-
-export interface IActivityItem {
-	type: 'PLAYING' | 'STREAMING' | 'LISTENING' | 'WATCHING' | 'COMPETING';
-	text: string;
-	url?: string;
-	shardId?: number | number[];
 }
 
 export interface IQueueItem {

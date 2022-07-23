@@ -1,6 +1,6 @@
 import { Command, AbstractCommand, On, Context } from '../../src/index';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, ModalSubmitInteraction, TextInputComponent } from 'discord.js';
+import { ButtonStyle, CommandInteraction, ModalSubmitInteraction, TextInputBuilder, TextInputStyle } from 'discord.js';
 
 @Command(
 	new SlashCommandBuilder()
@@ -27,21 +27,21 @@ export default class ModalCommand extends AbstractCommand {
 	@On.SubCommand('command')
 	public async onModalCommand(context: Context): Promise<void> {
 		const { interaction, fields } = await context.action.modal('Modal Command Test', [
-			new TextInputComponent()
+			new TextInputBuilder()
 				.setLabel('Name')
 				.setCustomId('name')
 				.setMinLength(0)
 				.setMaxLength(25)
 				.setRequired(true)
-				.setStyle('SHORT')
+				.setStyle(TextInputStyle.Short)
 				.setPlaceholder('Enter your name.'),
-			new TextInputComponent()
+			new TextInputBuilder()
 				.setLabel('Your Biography')
 				.setCustomId('biography')
 				.setMinLength(0)
 				.setMaxLength(25)
 				.setRequired(true)
-				.setStyle('PARAGRAPH')
+				.setStyle(TextInputStyle.Paragraph)
 				.setPlaceholder('Describe yourself.'),
 		]);
 		await interaction.reply(`Your name is ${fields.getTextInputValue('name')} and your biography is ${fields.getTextInputValue('biography')}.`);
@@ -51,21 +51,21 @@ export default class ModalCommand extends AbstractCommand {
 	public async onModalInteraction(context: Context): Promise<void> {
 		const interaction = context.getInteraction<CommandInteraction>();
 		const modal = context.action.createModal('Modal Interaction Test', 'ModalCommand:interaction-modal', [
-			new TextInputComponent()
+			new TextInputBuilder()
 				.setLabel('Name')
 				.setCustomId('name')
 				.setMinLength(0)
 				.setMaxLength(25)
 				.setRequired(true)
-				.setStyle('SHORT')
+				.setStyle(TextInputStyle.Short)
 				.setPlaceholder('Enter your name.'),
-			new TextInputComponent()
+			new TextInputBuilder()
 				.setLabel('Your Biography')
 				.setCustomId('biography')
 				.setMinLength(0)
 				.setMaxLength(25)
 				.setRequired(true)
-				.setStyle('PARAGRAPH')
+				.setStyle(TextInputStyle.Paragraph)
 				.setPlaceholder('Describe yourself.'),
 		]);
 		interaction.showModal(modal);
@@ -83,7 +83,7 @@ export default class ModalCommand extends AbstractCommand {
 			content: 'Press this button to open a form',
 			components: [
 				context.action.createActionRow(
-					context.action.createButton('Open Modal', 'PRIMARY', 'ModalCommand:interaction-button-open'),
+					context.action.createButton('Open Modal', ButtonStyle.Primary, 'ModalCommand:interaction-button-open'),
 				),
 			],
 		});
@@ -93,21 +93,21 @@ export default class ModalCommand extends AbstractCommand {
 	public async onModalInteractionButtonOpen(context: Context): Promise<void> {
 		const interaction = context.getInteraction<CommandInteraction>();
 		const modal = context.action.createModal('Modal Button Test', 'ModalCommand:interaction-modal', [
-			new TextInputComponent()
+			new TextInputBuilder()
 				.setLabel('Name')
 				.setCustomId('name')
 				.setMinLength(0)
 				.setMaxLength(25)
 				.setRequired(true)
-				.setStyle('SHORT')
+				.setStyle(TextInputStyle.Short)
 				.setPlaceholder('Enter your name.'),
-			new TextInputComponent()
+			new TextInputBuilder()
 				.setLabel('Your Biography')
 				.setCustomId('biography')
 				.setMinLength(0)
 				.setMaxLength(25)
 				.setRequired(true)
-				.setStyle('PARAGRAPH')
+				.setStyle(TextInputStyle.Paragraph)
 				.setPlaceholder('Describe yourself.'),
 		]);
 		interaction.showModal(modal);

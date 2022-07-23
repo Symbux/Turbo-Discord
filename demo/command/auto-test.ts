@@ -75,21 +75,21 @@ export default class AutoTestCommand extends AbstractCommand {
 	@On.SubCommand('names')
 	public async onAutoTestNames(context: Context): Promise<void> {
 		const interaction = context.getInteraction<CommandInteraction>();
-		const query = interaction.options.getString('name', true) as string;
+		const query = interaction.options.get('name', true).value;
 		await context.respond(`You typed: ${query}`);
 	}
 
 	@On.SubCommand('ages')
 	public async onAutoTestAges(context: Context): Promise<void> {
 		const interaction = context.getInteraction<CommandInteraction>();
-		const query = interaction.options.getString('age', true) as string;
+		const query = interaction.options.get('age', true).value;
 		await context.respond(`You typed: ${query}`);
 	}
 
 	@On.SubCommand('books')
 	public async onAutoTestBooks(context: Context): Promise<void> {
 		const interaction = context.getInteraction<CommandInteraction>();
-		const query = interaction.options.getString('name', true) as string;
+		const query = interaction.options.get('name', true).value;
 		await context.respond(`You typed: ${query}`);
 	}
 

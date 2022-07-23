@@ -1,6 +1,6 @@
 import { Inject } from '@symbux/injector';
 import { Authentication, ILogger } from '@symbux/turbo';
-import { AutocompleteInteraction, ButtonInteraction, ContextMenuInteraction, ModalSubmitInteraction, SelectMenuInteraction, ClientEvents, CommandInteraction, Client } from 'discord.js';
+import { AutocompleteInteraction, ButtonInteraction, ModalSubmitInteraction, SelectMenuInteraction, ClientEvents, CommandInteraction, Client, ContextMenuCommandInteraction } from 'discord.js';
 import { Context } from '../service/context';
 import { GenericContext } from '../service/generic-context';
 import Router from './router';
@@ -126,7 +126,7 @@ export default class Handler {
 		await mapping.controller.instance[mapping.methodName](context);
 	}
 
-	public async onContextMenu(interaction: ContextMenuInteraction): Promise<void> {
+	public async onContextMenu(interaction: ContextMenuCommandInteraction): Promise<void> {
 
 		// Define the context.
 		const commandName = interaction.commandName;

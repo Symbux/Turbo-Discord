@@ -1,9 +1,10 @@
-import { MessageButtonStyleResolvable, EmbedFieldData } from 'discord.js';
+import { ButtonBuilder } from '@discordjs/builders';
+import { SelectMenuBuilder, ButtonStyle, EmbedField } from 'discord.js';
 
 export interface ActionChoiceItem {
 	name: string;
 	value: string;
-	style?: MessageButtonStyleResolvable,
+	style?: ButtonStyle,
 }
 
 export interface ActionSelectItem {
@@ -17,7 +18,7 @@ export interface ActionBaseOptions {
 	ephermeral?: boolean;
 	timeout?: number;
 	description?: string;
-	fields?: EmbedFieldData[],
+	fields?: EmbedField[],
 }
 
 export interface ActionConfirmOptions extends ActionBaseOptions {
@@ -36,6 +37,8 @@ export interface ActionSelectOptions extends ActionBaseOptions {
 export interface ActionModalOptions {
 	timeout?: number;
 }
+
+export type AnyMessageComponentBuilder = ButtonBuilder | SelectMenuBuilder;
 
 /* eslint-disable @typescript-eslint/no-empty-interface */
 export interface ActionChoiceOptions extends ActionBaseOptions {}

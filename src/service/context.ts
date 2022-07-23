@@ -1,4 +1,7 @@
-import { Client, Guild, GuildMember, Interaction, PermissionResolvable, TextChannel, User, Message, MessagePayload, WebhookEditMessageOptions, CommandInteraction } from 'discord.js';
+import {
+	Client, Guild, GuildMember, PermissionResolvable, TextChannel, User, Message, MessagePayload, WebhookEditMessageOptions,
+	CommandInteraction, ButtonInteraction, SelectMenuInteraction, AutocompleteInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction,
+} from 'discord.js';
 import { Translator } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
 import { Session } from '../module/session';
@@ -25,7 +28,7 @@ export class Context {
 	 * @constructor
 	 */
 	public constructor(
-		private interaction: Interaction,
+		private interaction: CommandInteraction | ButtonInteraction | SelectMenuInteraction | AutocompleteInteraction | ModalSubmitInteraction | ContextMenuCommandInteraction,
 		public interactionType: string,
 		public session: Session,
 	) {
@@ -82,8 +85,8 @@ export class Context {
 	 * @returns Interaction
 	 * @public
 	 */
-	public getRaw(): Interaction {
-		return this.interaction;
+	public getRaw<T = CommandInteraction | ButtonInteraction | SelectMenuInteraction | AutocompleteInteraction | ModalSubmitInteraction | ContextMenuCommandInteraction>(): T {
+		return this.interaction as any as T;
 	}
 
 	/**
@@ -137,7 +140,7 @@ export class Context {
 	 * Will defer the reply, so you have more time to respond.
 	 */
 	public async defer(isEphemeral = true): Promise<void> {
-		if (this.interaction.isCommand() || this.interaction.isButton() || this.interaction.isSelectMenu() || this.interaction.isContextMenu() || this.interaction.isMessageComponent()) {
+		if (this.interaction.isChatInputCommand() || this.interaction.isButton() || this.interaction.isSelectMenu() || this.interaction.isContextMenuCommand() || this.interaction.isMessageContextMenuCommand()) {
 			await this.interaction.deferReply({
 				ephemeral: isEphemeral,
 			});
@@ -149,7 +152,7 @@ export class Context {
 	 * and message components.
 	 */
 	public async deferUpdate(): Promise<void> {
-		if (this.interaction.isButton() || this.interaction.isSelectMenu() || this.interaction.isMessageComponent()) {
+		if (this.interaction.isButton() || this.interaction.isSelectMenu()) {
 			await this.interaction.deferUpdate();
 		}
 	}
@@ -255,9 +258,10 @@ export class Context {
 	 * @returns Message
 	 */
 	public getContextMessage(): Message | null {
-		if (!this.interaction.isContextMenu()) return null;
-		if (!this.interaction.isMessageContextMenu()) return null;
-		return this.interaction.targetMessage as Message;
+		if (this.interaction.isMessageContextMenuCommand()) {
+			return this.interaction.targetMessage as Message;
+		}
+		return null;
 	}
 
 	/**
@@ -266,13 +270,13 @@ export class Context {
 	 * @returns User | null
 	 */
 	public getContextUser(): User | null {
-		if (!this.interaction.isContextMenu()) return null;
-		if (this.interaction.isMessageContextMenu()) {
+		if (!this.interaction.isContextMenuCommand()) return null;
+		if (this.interaction.isMessageContextMenuCommand()) {
 			const targetMessage = this.getContextMessage();
 			if (!targetMessage) return null;
 			return targetMessage.author;
 		} else {
-			if (!this.interaction.isUserContextMenu()) return null;
+			if (!this.interaction.isUserContextMenuCommand()) return null;
 			return this.interaction.targetUser as User;
 		}
 	}
