@@ -34,8 +34,8 @@
     "add-peers": "yarn add --peer @symbux/turbo @symbux/injector"
   },
   "peerDependencies": {
-    "@symbux/injector": "^1.4.0",
-    "@symbux/turbo": "^0.6.8"
+    "@symbux/injector": "^1.5.0",
+    "@symbux/turbo": "^0.6.14"
   },
   "devDependencies": {
     "@types/node": "^18.8.4",
