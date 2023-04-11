@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.8.2](https://github.com/Symbux/Turbo-Discord/compare/v0.8.1...v0.8.2) - 2023-04-11
+
+### Commits
+
+- Updated discord to fixed bug with autocomplete. [`de00492`](https://github.com/Symbux/Turbo-Discord/commit/de0049263e7378c06923244bc9efc2776cd83409)
+- Updated changelog. [`becea5a`](https://github.com/Symbux/Turbo-Discord/commit/becea5a7e9c158246df60cd081a2214ce2515b33)
+
 ## [v0.8.1](https://github.com/Symbux/Turbo-Discord/compare/v0.8.0...v0.8.1) - 2023-04-03
 
 ### Commits
