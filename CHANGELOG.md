@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.8.3](https://github.com/Symbux/Turbo-Discord/compare/v0.8.2...v0.8.3) - 2023-04-11
+
+### Commits
+
+- Added support for global commands. [`edceb17`](https://github.com/Symbux/Turbo-Discord/commit/edceb177bcabf5cc29f631692fd63136e636a1d0)
+- Updated changelog. [`1199b3d`](https://github.com/Symbux/Turbo-Discord/commit/1199b3d31a4abe5d8df6133047165e9123e74b14)
+
 ## [v0.8.2](https://github.com/Symbux/Turbo-Discord/compare/v0.8.1...v0.8.2) - 2023-04-11
 
 ### Commits
