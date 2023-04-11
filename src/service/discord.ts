@@ -1,5 +1,7 @@
 import { AbstractService, Service, IService } from '@symbux/turbo';
 import { Client, ClientEvents } from 'discord.js';
+import { REST } from '@discordjs/rest';
+import { Routes } from 'discord-api-types/v9';
 import { Injector } from '@symbux/injector';
 import { IActivityItem, IOptions } from '../types/base';
 import { Session } from '../module/session';
@@ -188,9 +190,17 @@ export class DiscordService extends AbstractService implements IService {
 			const statistics = this.router.getStatistics();
 
 			// Loop the guilds and set the commands.
-			await Promise.all(this.client.guilds.cache.map(async guild => {
-				await guild.commands.set(slashCommands.map(c => c.toJSON()) as any);
-			}));
+			if (this.options.bot?.global) {
+				const rest = new REST({ version: '9' }).setToken(this.options.bot.token);
+				await rest.put(
+					Routes.applicationCommands(this.options.client.id),
+					{ body: slashCommands.map(c => c.toJSON()) },
+				);
+			} else {
+				await Promise.all(this.client.guilds.cache.map(async guild => {
+					await guild.commands.set(slashCommands.map(c => c.toJSON()) as any);
+				}));
+			}
 
 			// Notify the console.
 			this.logger.verbose('PLUGIN:DISCORD', `Force registered ${statistics.commands} command(s), ${statistics.contexts} context menu(s), and ${statistics.events} event handler(s).`);
