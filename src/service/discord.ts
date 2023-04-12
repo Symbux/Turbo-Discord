@@ -194,7 +194,7 @@ export class DiscordService extends AbstractService implements IService {
 				const rest = new REST({ version: '9' }).setToken(this.options.bot.token);
 				await rest.put(
 					Routes.applicationCommands(this.options.client.id),
-					{ body: slashCommands.map(c => c.toJSON()) },
+					{ body: slashCommands },
 				);
 			} else {
 				await Promise.all(this.client.guilds.cache.map(async guild => {
