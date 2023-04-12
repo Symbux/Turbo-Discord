@@ -193,7 +193,7 @@ export class DiscordService extends AbstractService implements IService {
 			if (this.options.bot?.global) {
 				const rest = new REST({ version: '9' }).setToken(this.options.bot.token);
 				await rest.put(
-					Routes.applicationCommands(this.options.client.id),
+					Routes.applicationCommands(this.options.oauth.id),
 					{ body: slashCommands },
 				);
 			} else {
