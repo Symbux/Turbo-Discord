@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.8.5](https://github.com/Symbux/Turbo-Discord/compare/v0.8.4...v0.8.5) - 2023-04-12
+
+### Commits
+
+- Updated changelog. [`feadd82`](https://github.com/Symbux/Turbo-Discord/commit/feadd82556350696649f67eabbab111e7836717b)
+- Added fix for slash commands registration. [`74405d8`](https://github.com/Symbux/Turbo-Discord/commit/74405d85f9000809ecba701ed8f5a06f0dc4054a)
+
 ## [v0.8.4](https://github.com/Symbux/Turbo-Discord/compare/v0.8.3...v0.8.4) - 2023-04-12
 
 ### Commits
