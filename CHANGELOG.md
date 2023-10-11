@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.8.7](https://github.com/Symbux/Turbo-Discord/compare/v0.8.6...v0.8.7) - 2023-10-11
+
+### Commits
+
+- Removed console logging, not upgraded to discord.js@14 yet, due to the amount of changes, pulled latest turbo minor patch. [`35842ce`](https://github.com/Symbux/Turbo-Discord/commit/35842ce82da64274c35613f66d34acdba12af4f2)
+- Updated changelog [`47fa627`](https://github.com/Symbux/Turbo-Discord/commit/47fa62776a86a46cac5fd00350c5a8210b927d72)
+
 ## [v0.8.6](https://github.com/Symbux/Turbo-Discord/compare/v0.8.5...v0.8.6) - 2023-04-12
 
 ### Commits
