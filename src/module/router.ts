@@ -174,8 +174,6 @@ export default class Router {
 				});
 			}
 		});
-
-		console.log(this.maps);
 	}
 
 	public async handle(interaction: Interaction<CacheType>): Promise<void> {
