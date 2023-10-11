@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.8.8](https://github.com/Symbux/Turbo-Discord/compare/v0.8.7...v0.8.8) - 2023-10-11
+
+### Commits
+
+- Fixed lint issues and upgraded dependencies [`44a233a`](https://github.com/Symbux/Turbo-Discord/commit/44a233a786f776b2019dcc7d8a4d42dad5e64546)
+- Updated changelog [`e19911d`](https://github.com/Symbux/Turbo-Discord/commit/e19911db19e599d868ef317138a7e4c88023f9d1)
+- Bumped package version [`a966388`](https://github.com/Symbux/Turbo-Discord/commit/a96638848aae9df09bb99b9b94204e2337c7e2cf)
+
 ## [v0.8.7](https://github.com/Symbux/Turbo-Discord/compare/v0.8.6...v0.8.7) - 2023-10-11
 
 ### Commits
