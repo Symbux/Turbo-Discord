@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import { Http, ILogger } from '@symbux/turbo';
 import { Inject } from '@symbux/injector';
 import { IOptions } from '../types/base';
@@ -181,11 +183,11 @@ export class OAuth {
 
 	private static hasValidOptions(): boolean {
 		if (
-			this.options.oauth &&
-			this.options.oauth.secret &&
-			this.options.oauth.scopes &&
-			this.options.oauth.baseUrl &&
-			this.options.oauth.id
+			this.options.oauth
+			&& this.options.oauth.secret
+			&& this.options.oauth.scopes
+			&& this.options.oauth.baseUrl
+			&& this.options.oauth.id
 		) {
 			return true;
 		} else {

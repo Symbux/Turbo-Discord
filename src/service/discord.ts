@@ -19,7 +19,6 @@ import Router from '../module/router';
  */
 export class DiscordService extends AbstractService implements IService {
 	private client!: Client;
-	private controllers: Array<any> = [];
 	private session: Session;
 	private router: Router;
 	private currentActivityIndex = 0;

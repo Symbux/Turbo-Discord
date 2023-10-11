@@ -28,7 +28,7 @@
   "scripts": {
     "start": "ENV=development node -r ts-node/register demo/index.ts",
     "build": "rm -rf lib && tsc",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint ./ --config .eslintrc.cjs --ext .ts",
     "prepublishOnly": "yarn lint && yarn build",
     "changelog": "auto-changelog --template keepachangelog --commit-limit false --hide-credit",
     "add-peers": "yarn add --peer @symbux/turbo @symbux/injector"
@@ -43,6 +43,11 @@
     "@typescript-eslint/parser": "^6.7.5",
     "dotenv": "^16.3.1",
     "eslint": "^8.51.0",
+    "eslint-plugin-no-unsanitized": "^4.0.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-security": "^1.7.1",
+    "eslint-plugin-sonarjs": "^0.21.0",
+    "eslint-plugin-xss": "^0.1.12",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },

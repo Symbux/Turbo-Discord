@@ -187,7 +187,7 @@ export default class TodoCommand extends AbstractCommand {
 		interaction.respond(this.tasks.filter(task => {
 			if (!query || String(query).length === 0) return true;
 			return task.name.toLowerCase().includes(query.toLowerCase());
-		}).map(task => { return { name: task.name, value: task.id }}));
+		}).map(task => { return { name: task.name, value: task.id };}));
 	}
 
 	@Add.MessageContext('Add To-Do')

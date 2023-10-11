@@ -89,20 +89,24 @@ export default class AutoTestCommand extends AbstractCommand {
 	@On.SubCommand('books')
 	public async onAutoTestBooks(context: Context): Promise<void> {
 		const interaction = context.getInteraction<CommandInteraction>();
-		const query = interaction.options.getString('name', true) as string;
-		await context.respond(`You typed: ${query}`);
+		const queryName = interaction.options.getString('name', true) as string;
+		await context.respond(`You typed: ${queryName}`);
 	}
 
 	private baseAutocomplete(data: string[], query: string): Array<{ name: string, value: string }> {
 
 		// If no query or empty query, return all data.
 		if (!query || String(query).length === 0) {
-			return data.map(item => { return { name: item, value: item }});
+			return data.map(item => {
+				return { name: item, value: item };
+			});
 		}
 
 		// Has query, filter on that data.
 		return data
 			.filter(item => item.toLowerCase().includes(query.toLowerCase()))
-			.map(item => { return { name: item, value: item }});
+			.map(item => {
+				return { name: item, value: item };
+			});
 	}
 }

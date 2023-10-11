@@ -39,6 +39,7 @@ export default class ReverseContext extends AbstractCommand {
 	@Add.MessageContext('Test Message Access')
 	public async onTestMessageAccess(context: Context): Promise<void> {
 		console.log(
+			'Test Message Access',
 			context.getLanguages(),
 			context.getAuth(),
 			context.getRaw(),
@@ -53,6 +54,7 @@ export default class ReverseContext extends AbstractCommand {
 	@Add.UserContext('Test User Access')
 	public async onTestUserAccess(context: Context): Promise<void> {
 		console.log(
+			'Test User Access',
 			context.getLanguages(),
 			context.getAuth(),
 			context.getRaw(),
